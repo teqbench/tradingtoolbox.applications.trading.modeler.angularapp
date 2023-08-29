@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <!-- <button mat-icon-button class="large">
+            <mat-icon>view_in_ar</mat-icon>
+        </button>
+        <span>Trading Toolbox</span>
+        <span class="toolbar-spacer"></span> -->
+        <button mat-icon-button [matMenuTriggerFor]="appMenuComplete">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #appMenuComplete="matMenu">
+            <button mat-menu-item>
+                <mat-icon>palette</mat-icon>
+                <span>
+                    <mat-slide-toggle [checked]="isDarkThemeActive" (change)="toggleTheme($event.checked)" labelPosition="before">
+                        Dark Theme
+                    </mat-slide-toggle>
+                </span>
+            </button>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
