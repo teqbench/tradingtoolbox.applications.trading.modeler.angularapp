@@ -25,12 +25,13 @@ export class ThemeChangedEventArgs {
   }
 }
 
+// These theme names need to correspond to the CSS (theme wrapping) classes found in styles.scss.
 export enum ThemeNameOptions {
   DarkTheme = "dark-theme",
   LightTheme = "light-theme"
 }
 
-export const DEFAULT_THEME: ThemeNameOptions = ThemeNameOptions.DarkTheme;
+export const DEFAULT_THEME: ThemeNameOptions = ThemeNameOptions.LightTheme;
 
 /**
  * Theme service to managed the activation of a theme as the current theme.

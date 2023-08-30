@@ -28,8 +28,13 @@ $light-theme: mat.define-light-theme((
     )
 ));
 
-// // Apply the dark theme by default
-@include mat.all-component-themes($dark-theme);
+.dark-theme {
+  @include mat.all-component-themes($dark-theme);
+}
+
+.light-theme {
+  @include mat.all-component-themes($light-theme);
+}
 
 html,
 body {

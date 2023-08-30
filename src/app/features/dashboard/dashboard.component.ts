@@ -44,6 +44,15 @@ export class DashboardComponent implements OnInit {
   onThemeChanged(args: ThemeChangedEventArgs) {
     this.isDarkThemeActive = args.name === ThemeNameOptions.DarkTheme;
 
-    // At this point, change the active material theme...as of 8/29/23 having issues switching themes; something changed with newer Angular vs the v12 was using originally. Good to figure out to get the rust out :)
+    // This article provided the final, missing elements (using CSS class to wrap the themes in styles.scss)
+    // https://blog.knoldus.com/understanding-dynamic-theming-in-angular-material/
+    // TODO: optimize.
+    if (this.isDarkThemeActive) {
+      document.body.classList.add(ThemeNameOptions.DarkTheme);
+      document.body.classList.remove(ThemeNameOptions.LightTheme);
+    } else {
+      document.body.classList.add(ThemeNameOptions.LightTheme);
+      document.body.classList.remove(ThemeNameOptions.DarkTheme);
+    }
   }
 }
