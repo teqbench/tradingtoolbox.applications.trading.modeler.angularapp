@@ -1,3 +1,25 @@
+mat-toolbar {
+  position: sticky;
+  position: -webkit-sticky;
+  /* For macOS/iOS Safari */
+  top: 0;
+  /* Sets the sticky toolbar to be on top */
+  z-index: 1000;
+  /* Ensure that your app's content doesn't overlap the toolbar */
+}
+
+.header-logo-icon {
+  font-size: 48px !important; //make it bigger, the default being 24px. 
+  width: 48px; //Do not forget to adjust the 
+  height: 48px; //height and/or the width, as in the demo
+
+  margin: 10px 5px 10px 0px;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
 section {
   display: table;
 }
