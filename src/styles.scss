@@ -39,7 +39,7 @@ $light-theme: mat.define-light-theme((
   $accent-palette: map.get($color-config, 'accent');
   $warn-palette: map.get($color-config, 'warn');
   
-  .highdark {
+  .highlight {
     color: mat.get-color-from-palette($accent-palette, 500);
   }
 
