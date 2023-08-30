@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 @include mat.core();
@@ -30,10 +31,97 @@ $light-theme: mat.define-light-theme((
 
 .dark-theme {
   @include mat.all-component-themes($dark-theme);
+
+  $color-config: mat.get-color-config($dark-theme);
+
+  // get the chosen palette : primary, accent, warn
+  $primary-palette: map.get($color-config, 'primary');
+  $accent-palette: map.get($color-config, 'accent');
+  $warn-palette: map.get($color-config, 'warn');
+  
+  .highdark {
+    color: mat.get-color-from-palette($accent-palette, 500);
+  }
+
+  .success-snackbar {
+    color: mat.get-color-from-palette(mat.$green-palette, 500);
+    background-color: mat.get-color-from-palette(mat.$green-palette, 400);
+  }
+
+  .error-snackbar {
+    background-color: mat.get-color-from-palette($warn-palette, 500);
+  }
+
+  .warning-snackbar {
+    background-color: mat.get-color-from-palette(mat.$orange-palette, A200);
+  }
+
+  .info-snackbar {
+    background-color: mat.get-color-from-palette($accent-palette, 100);
+  }
+
+  .help-snackbar {
+    background-color: mat.get-color-from-palette($accent-palette, 500);
+  }
+
+  .cell-border-left {
+    border-left: mat.get-color-from-palette(mat.$grey-palette, 700) 1px solid;
+
+    padding-left: 8px;
+  }
+
+  mat-row:hover {
+    background-color: mat.get-color-from-palette($accent-palette, 600);
+  }  
 }
 
 .light-theme {
   @include mat.all-component-themes($light-theme);
+
+  $color-config: mat.get-color-config($light-theme);
+
+  // get the chosen palette : primary, accent, warn
+  $primary-palette: map.get($color-config, 'primary');
+  $accent-palette: map.get($color-config, 'accent');
+  $warn-palette: map.get($color-config, 'warn');
+  
+  .highlight {
+    color: mat.get-color-from-palette($accent-palette, 500);
+  }
+
+  .success-snackbar {
+    color: mat.get-color-from-palette(mat.$green-palette, 500);
+    background-color: mat.get-color-from-palette(mat.$green-palette, 400);
+  }
+
+  .error-snackbar {
+    background-color: mat.get-color-from-palette($warn-palette, 500);
+  }
+
+  .warning-snackbar {
+    color: mat.get-color-from-palette(mat.$orange-palette, 50);
+    background-color: mat.get-color-from-palette(mat.$orange-palette, A200);
+  }
+
+  .info-snackbar {
+    color: mat.get-color-from-palette($accent-palette, 500);
+    background-color: mat.get-color-from-palette($accent-palette, 50);
+  }
+
+  .help-snackbar {
+    color: mat.get-color-from-palette($accent-palette, 50);
+    background-color: mat.get-color-from-palette($accent-palette, 500);
+  }
+
+  .cell-border-left {
+    border-left: mat.get-color-from-palette(mat.$grey-palette, 300) 1px solid;
+
+    padding-left: 8px;
+  }
+
+  mat-row:hover {
+    background-color: mat.get-color-from-palette($accent-palette, 50);
+  }
 }
 
 html,
