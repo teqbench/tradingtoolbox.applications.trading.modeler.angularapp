@@ -25,13 +25,13 @@ export class ThemeChangedEventArgs {
   }
 }
 
-// These theme names need to correspond to the CSS (theme wrapping) classes found in styles.scss.
+// These theme names need to correspond to the CSS classes found in styles.scss which are used to apply the theme at runtime.
 export enum ThemeNameOptions {
   DarkTheme = "dark-theme",
   LightTheme = "light-theme"
 }
 
-export const DEFAULT_THEME: ThemeNameOptions = ThemeNameOptions.LightTheme;
+const DEFAULT_THEME: ThemeNameOptions = ThemeNameOptions.DarkTheme;
 
 /**
  * Theme service to managed the activation of a theme as the current theme.
@@ -47,7 +47,7 @@ export class ThemeService {
   themeChangedEventArgs = new ThemeChangedEventArgs();
 
   /**
-   * Initialized the current theme to the defaul theme.
+   * Initialized the startup theme to the default theme.
    *
    * @memberof ThemeService
    */
