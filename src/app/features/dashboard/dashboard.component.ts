@@ -2,6 +2,12 @@ import { } from '@angular/material'
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+// Import components
+import { ConfirmationDialogArgs } from '../../core/components/confirmation-dialog/confirmation-dialog.component';
+
+// Import Services
+import { ConfirmationDialogService } from '../../core/services/confirmation-dialog.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { ThemeService, ThemeNameOptions, ThemeChangedEventArgs } from '../../core/services/theme.service';
 
 @Component({
@@ -12,7 +18,7 @@ import { ThemeService, ThemeNameOptions, ThemeChangedEventArgs } from '../../cor
 export class DashboardComponent implements OnInit {
   isDarkThemeActive: boolean = false;
 
-  constructor(private _themeService: ThemeService) {
+  constructor(private _confirmationDialogService: ConfirmationDialogService, private _notificationService: NotificationService, private _themeService: ThemeService) {
   }
 
   /**
@@ -54,5 +60,17 @@ export class DashboardComponent implements OnInit {
       document.body.classList.add(ThemeNameOptions.LightTheme);
       document.body.classList.remove(ThemeNameOptions.DarkTheme);
     }
+  }
+
+  testConfirmationDialog() {
+    let args: ConfirmationDialogArgs = new ConfirmationDialogArgs("Test Confirmation", "Does this test confirmation dialog work?");
+
+    this._confirmationDialogService.showDialog(args).subscribe(isConfirmed => {
+      if (isConfirmed) {
+        this._notificationService.success("Confirmed!!");
+      } else {
+        this._notificationService.warn("NOT Confirmed!!");
+      }
+    });
   }
 }

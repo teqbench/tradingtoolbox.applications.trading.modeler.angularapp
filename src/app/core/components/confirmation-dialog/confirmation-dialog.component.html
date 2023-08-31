@@ -1,0 +1,13 @@
+<!-- <div fxLayout="row" fxFill fxLayoutGap="20px">
+    <div fxLayout="column"><mat-icon class="icon-2x">warning_amber</mat-icon></div>
+    <div fxLayout="column"><h1 mat-dialog-title>{{title}}</h1></div>
+</div> -->
+
+<!-- TODO: Icon alignment needs to be fixed...will do when implement replacement for FlexLayout which has been depricated. -->
+<h2 mat-dialog-title><mat-icon class="icon-2x">warning_amber</mat-icon>{{title}}</h2>
+<mat-dialog-content [innerHtml]="message">
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onDismiss()">No</button>
+    <button mat-button (click)="onConfirm()">Yes</button>
+</mat-dialog-actions>
