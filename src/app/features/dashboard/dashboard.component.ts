@@ -65,6 +65,8 @@ export class DashboardComponent implements OnInit {
   testConfirmationDialog() {
     let args: ConfirmationDialogArgs = new ConfirmationDialogArgs("Test Confirmation", "Does this test confirmation dialog work?");
 
+    this._notificationService.close();
+    
     this._confirmationDialogService.showDialog(args).subscribe(isConfirmed => {
       if (isConfirmed) {
         this._notificationService.success("Confirmed!!");

@@ -38,6 +38,15 @@ export class NotificationService {
   }
 
   /**
+   * Closes the snackbar.
+   *
+   * @memberof NotificationService
+   */
+  close() {
+    this._snackBar.dismiss();
+  }
+
+  /**
    * Gets the CSS panel class to use for the supplied notification type.
    *
    * @private
