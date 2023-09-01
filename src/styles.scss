@@ -139,3 +139,24 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.mat-icon-button.large {
+  width: 64px;
+  height: 64px;
+  line-height: 64px;
+
+  .mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+  }
+}
+
+mat-icon.icon-1-5x {
+  transform: scale(1.5);
+}
+
+mat-icon.icon-2x {
+  transform: scale(2);
+}
