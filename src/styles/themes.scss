@@ -1,0 +1,211 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Define dark theme
+$dark-primary-palette: mat.define-palette(mat.$grey-palette, 500, 200, 700);
+$dark-accent-palette: mat.define-palette(mat.$grey-palette, 100, 50, 200);
+$dark-warn-palette: mat.define-palette(mat.$red-palette, A200, A100, A400);
+
+$dark-theme: mat.define-dark-theme((color: (primary: $dark-primary-palette,
+                accent: $dark-accent-palette,
+                warn: $dark-warn-palette,
+            )));
+
+// Define light theme
+$light-primary-palette: mat.define-palette(mat.$blue-palette);
+$light-accent-palette: mat.define-palette(mat.$blue-palette, 200, 50, 500);
+$light-warn-palette: mat.define-palette(mat.$red-palette);
+
+$light-theme: mat.define-light-theme((color: (primary: $light-primary-palette,
+                accent: $light-accent-palette,
+                warn: $light-warn-palette,
+            )));
+
+// Apply the light theme by default.
+@include mat.core-theme($light-theme);
+@include mat.button-theme($light-theme);
+
+// Define dark theme CSS class to be applied when user toggles theme.
+.dark-theme {
+    @include mat.all-component-colors($dark-theme);
+
+    $color-config: mat.get-color-config($dark-theme);
+
+    // get the chosen palette : primary, accent, warn
+    $primary-palette: map.get($color-config, 'primary');
+    $accent-palette: map.get($color-config, 'accent');
+    $warn-palette: map.get($color-config, 'warn');
+
+    .highlight {
+        color: mat.get-color-from-palette($accent-palette, 500);
+    }
+
+    //   mat-row:hover {
+    //     background-color: mat.get-color-from-palette($accent-palette, 600);
+    //   }  
+
+    // As of 9/1/23, the currently documented way of applying extra styling to the snackbar
+    // via the config setting 'panelClass' passed when opening, does NOT work as documented.
+    // The following styling implementations are per the thread found at: 
+    // https://github.com/angular/components/issues/26928#issuecomment-1508462122
+    // which references https://betterprogramming.pub/how-to-create-a-fancy-mat-snackbar-with-tailwind-css-a9fa0cf0b0c9#ec3a video.
+    // So, in all likelihood, the following is a hack until the Angular team fixes this (on another thread, an Angular team member said 
+    // they are working on providing an api call in the future),
+    .success-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette(mat.$green-palette, 400);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }
+    }
+
+    .error-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette($warn-palette, 500);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }        
+    }
+
+    .warning-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette(mat.$orange-palette, A400);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }        
+    }
+
+    .info-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette($accent-palette, 500);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }        
+    }
+
+    .help-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette($accent-palette, 500);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }        
+    }
+
+}
+
+// Define light theme CSS class to be applied when user toggles theme.
+.light-theme {
+    @include mat.all-component-colors($light-theme);
+
+    $color-config: mat.get-color-config($light-theme);
+
+    // get the chosen palette : primary, accent, warn
+    $primary-palette: map.get($color-config, 'primary');
+    $accent-palette: map.get($color-config, 'accent');
+    $warn-palette: map.get($color-config, 'warn');
+
+    .highlight {
+        color: mat.get-color-from-palette($accent-palette, 500);
+    }
+
+    // As of 9/1/23, the currently documented way of applying extra styling to the snackbar
+    // via the config setting 'panelClass' passed when opening, does NOT work as documented.
+    // The following styling implementations are per the thread found at: 
+    // https://github.com/angular/components/issues/26928#issuecomment-1508462122
+    // which references https://betterprogramming.pub/how-to-create-a-fancy-mat-snackbar-with-tailwind-css-a9fa0cf0b0c9#ec3a video.
+    // So, in all likelihood, the following is a hack until the Angular team fixes this (on another thread, an Angular team member said 
+    // they are working on providing an api call in the future),
+    .success-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette(mat.$green-palette, 400);
+        }
+    }
+
+    .error-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette($warn-palette, 500);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }
+    }
+
+    .warning-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette(mat.$orange-palette, A400);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }
+    }
+
+    .info-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette($accent-palette, 500);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }        
+    }
+
+    .help-snackbar.mat-mdc-snack-bar-container {
+        .mdc-snackbar__surface {
+            background: mat.get-color-from-palette($accent-palette, 500);
+        }
+
+        .mat-mdc-button {
+            color: white !important;
+        }
+
+        .mat-mdc-snack-bar-label.mdc-snackbar__label {
+            color: white;
+        }        
+    }
+}
