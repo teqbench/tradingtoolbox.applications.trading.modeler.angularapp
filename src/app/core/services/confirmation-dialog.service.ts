@@ -28,7 +28,8 @@ export class ConfirmationDialogService {
   public showDialog(args: ConfirmationDialogArgs): Observable<boolean> {
     this._dialogRef = this._dialog.open(ConfirmationDialogComponent, {
       data: args,
-      enterAnimationDuration: 0
+      enterAnimationDuration: 0,
+      exitAnimationDuration: 0
     })
 
     return this._dialogRef.afterClosed() as Observable<boolean>;
