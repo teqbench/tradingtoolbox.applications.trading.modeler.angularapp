@@ -1,0 +1,29 @@
+.snackbar-container {
+  display: grid;
+  grid-template-areas:
+      "icon content actions";
+  grid-template-columns: 48px minmax(auto, 300px);
+  // grid-template-rows: 48px auto auto;
+  gap: 10px;
+}
+
+.snackbar-icon {
+  grid-area: icon;
+  align-self: center;
+  justify-self: center;
+}
+
+.snackbar-content {
+  grid-area: content;
+  align-self: center;
+  justify-self: left;
+}
+
+.dialog-actions {
+  grid-area: actions;
+}
+
+.center-content {
+  text-align: center !important;
+  justify-content: center;
+}

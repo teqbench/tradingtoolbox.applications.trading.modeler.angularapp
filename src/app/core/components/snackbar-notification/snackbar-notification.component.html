@@ -1,2 +1,11 @@
-<!-- Will need to port from the old project when update from Flex Layout -->
-<span>{{data.message}}</span>
+<div class="snackbar-container">
+  <div class="snackbar-icon"><mat-icon class="icon-1-5x">{{getIcon}}</mat-icon></div>
+  <div class="snackbar-content">
+    <span>{{data.message}}</span>
+  </div>
+  <div class="dialog-actions">
+    <button mat-icon-button (click)="closeSnackbar()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
