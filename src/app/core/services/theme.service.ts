@@ -45,6 +45,7 @@ const DEFAULT_THEME: ThemeName = ThemeName.LightTheme;
 export class ThemeService {
   @Output() onThemeChanged: EventEmitter<ThemeChangedEventArgs> = new EventEmitter<ThemeChangedEventArgs>(true);
   themeChangedEventArgs = new ThemeChangedEventArgs();
+  private _activeTheme: ThemeName = DEFAULT_THEME;
 
   /**
    * Initialized the startup theme to the default theme.
@@ -62,9 +63,18 @@ export class ThemeService {
    * @memberof ThemeService
    */
   setTheme(themeName: ThemeName): void {
+    this._activeTheme = themeName;
+
     // TODO: store theme as part of user profile in DB so when sign in UI is set to that theme for user.
     this.themeChangedEventArgs.name = themeName;
 
     this.onThemeChanged.emit(this.themeChangedEventArgs);
+  }
+
+   /**
+   * Method to get the active theme.
+   */
+  getActiveTheme(): ThemeName {
+    return this._activeTheme;
   }
 }
