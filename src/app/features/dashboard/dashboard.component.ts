@@ -75,4 +75,20 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
+  showSuccessSnackbar(): void {
+    this._notificationService.success("This is a success snackbar!");
+  }
+  showInformationSnackbar(): void {
+    this._notificationService.information("This is a information snackbar!");
+  }
+  showWarningSnackbar(): void {
+    this._notificationService.warn("This is a warning snackbar!");
+  }
+  showErrorSnackbar(): void {
+    this._notificationService.error("This is a error snackbar!");
+  }
+  showHelpSnackbar(): void {
+    this._notificationService.help("This is a help snackbar!");
+  }
 }
