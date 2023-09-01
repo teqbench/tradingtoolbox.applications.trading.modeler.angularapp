@@ -31,7 +31,7 @@ export enum ThemeName {
   LightTheme = "light-theme"
 }
 
-const DEFAULT_THEME: ThemeName = ThemeName.DarkTheme;
+const DEFAULT_THEME: ThemeName = ThemeName.LightTheme;
 
 /**
  * Theme service to managed the activation of a theme as the current theme.
