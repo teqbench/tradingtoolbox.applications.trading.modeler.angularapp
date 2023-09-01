@@ -8,7 +8,7 @@ import { ConfirmationDialogArgs } from '../../core/components/confirmation-dialo
 // Import Services
 import { ConfirmationDialogService } from '../../core/services/confirmation-dialog.service';
 import { NotificationService } from '../../core/services/notification.service';
-import { ThemeService, ThemeName, ThemeChangedEventArgs } from '../../core/services/theme.service';
+import { ThemeService, ThemeType, ThemeChangedEventArgs } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
    * @memberof DashboardComponent
    */
   toggleTheme(checked: boolean) {
-    this._themeService.setTheme(checked ? ThemeName.DarkTheme : ThemeName.LightTheme);
+    this._themeService.setTheme(checked ? ThemeType.DarkTheme : ThemeType.LightTheme);
   }
 
   /**
@@ -48,17 +48,17 @@ export class DashboardComponent implements OnInit {
    * @memberof DashboardComponent
    */
   onThemeChanged(args: ThemeChangedEventArgs) {
-    this.isDarkThemeActive = args.name === ThemeName.DarkTheme;
+    this.isDarkThemeActive = args.theme === ThemeType.DarkTheme;
 
     // This article provided the final, missing elements (using CSS class to wrap the themes in styles.scss)
     // https://blog.knoldus.com/understanding-dynamic-theming-in-angular-material/
     // TODO: optimize.
     if (this.isDarkThemeActive) {
-      document.body.classList.add(ThemeName.DarkTheme);
-      document.body.classList.remove(ThemeName.LightTheme);
+      document.body.classList.add(ThemeType.DarkTheme);
+      document.body.classList.remove(ThemeType.LightTheme);
     } else {
-      document.body.classList.add(ThemeName.LightTheme);
-      document.body.classList.remove(ThemeName.DarkTheme);
+      document.body.classList.add(ThemeType.LightTheme);
+      document.body.classList.remove(ThemeType.DarkTheme);
     }
   }
 

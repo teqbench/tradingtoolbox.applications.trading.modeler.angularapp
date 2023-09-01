@@ -1,23 +1,23 @@
 import {Injectable, EventEmitter, Output} from '@angular/core';
 
 export class ThemeChangedEventArgs {
-  public name: ThemeName;
+  public theme: ThemeType;
 
-   constructor(n?: ThemeName) {
+   constructor(n?: ThemeType) {
     switch(n) {
-      case ThemeName.DarkTheme: {
-        this.name = ThemeName.DarkTheme;
+      case ThemeType.DarkTheme: {
+        this.theme = ThemeType.DarkTheme;
         
         break;
       }
-      case ThemeName.DarkTheme: {
-        this.name = ThemeName.LightTheme;
+      case ThemeType.DarkTheme: {
+        this.theme = ThemeType.LightTheme;
 
         break;
       }
       default:
       {
-        this.name = DEFAULT_THEME;
+        this.theme = DEFAULT_THEME;
         
         break;
       }
@@ -26,12 +26,12 @@ export class ThemeChangedEventArgs {
 }
 
 // These theme names need to correspond to the CSS classes found in styles.scss which are used to apply the theme at runtime.
-export enum ThemeName {
+export enum ThemeType {
   DarkTheme = "dark-theme",
   LightTheme = "light-theme"
 }
 
-const DEFAULT_THEME: ThemeName = ThemeName.LightTheme;
+const DEFAULT_THEME: ThemeType = ThemeType.LightTheme;
 
 /**
  * Theme service to managed the activation of a theme as the current theme.
@@ -45,7 +45,7 @@ const DEFAULT_THEME: ThemeName = ThemeName.LightTheme;
 export class ThemeService {
   @Output() onThemeChanged: EventEmitter<ThemeChangedEventArgs> = new EventEmitter<ThemeChangedEventArgs>(true);
   themeChangedEventArgs = new ThemeChangedEventArgs();
-  private _activeTheme: ThemeName = DEFAULT_THEME;
+  private _activeTheme: ThemeType = DEFAULT_THEME;
 
   /**
    * Initialized the startup theme to the default theme.
@@ -59,14 +59,14 @@ export class ThemeService {
   /**
    * Method to set the current theme.
    *
-   * @param {ThemeName} themeName Name of the new theme.
+   * @param {ThemeType} theme Name of the new theme.
    * @memberof ThemeService
    */
-  setTheme(themeName: ThemeName): void {
-    this._activeTheme = themeName;
+  setTheme(theme: ThemeType): void {
+    this._activeTheme = theme;
 
     // TODO: store theme as part of user profile in DB so when sign in UI is set to that theme for user.
-    this.themeChangedEventArgs.name = themeName;
+    this.themeChangedEventArgs.theme = theme;
 
     this.onThemeChanged.emit(this.themeChangedEventArgs);
   }
@@ -74,7 +74,7 @@ export class ThemeService {
    /**
    * Method to get the active theme.
    */
-  getActiveTheme(): ThemeName {
+  getActiveTheme(): ThemeType {
     return this._activeTheme;
   }
 }

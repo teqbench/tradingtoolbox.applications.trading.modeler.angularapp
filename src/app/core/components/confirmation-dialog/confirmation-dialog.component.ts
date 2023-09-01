@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 // Import services
-import { ThemeService, ThemeName, ThemeChangedEventArgs } from '../../services/theme.service';
+import { ThemeService, ThemeType, ThemeChangedEventArgs } from '../../services/theme.service';
 
 /**
  * Confirmation dialog component arguments. 
@@ -44,7 +44,7 @@ export class ConfirmationDialogComponent {
   constructor(private _themeService: ThemeService, public dialogRef: MatDialogRef<ConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public args: ConfirmationDialogArgs) {
     this.title = args.title;
     this.message = args.message;
-    this.isDarkThemeActive = _themeService.getActiveTheme() === ThemeName.DarkTheme;
+    this.isDarkThemeActive = _themeService.getActiveTheme() === ThemeType.DarkTheme;
   }
 
   /**
