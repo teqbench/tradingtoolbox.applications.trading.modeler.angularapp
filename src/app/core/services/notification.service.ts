@@ -62,7 +62,7 @@ export class NotificationService {
         return 'error-snackbar';
       case SnackBarNotificationType.Warning:
         return 'warning-snackbar';
-      case SnackBarNotificationType.Warning:
+      case SnackBarNotificationType.Help:
         return 'help-snackbar';
       case SnackBarNotificationType.Information:
       default:
