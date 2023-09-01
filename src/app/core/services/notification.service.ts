@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SnackbarNotificationComponent, SnackBarNotificationType, SnackBarNotificationArgs } from '../components/snackbar-notification/snackbar-notification.component';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class NotificationService {
   private readonly MIN_DURATION: number = 1000;
 
   // The maximum duration to display a notification for in miliseconds.
-  private readonly MAX_DURATION: number = 5000;
+  private readonly MAX_DURATION: number = 50000;
 
   /**
    * Creates an instance of NotificationService.
@@ -20,21 +20,22 @@ export class NotificationService {
   constructor(private _snackBar: MatSnackBar) { }
 
   /**
-   * General function to manage opening a snackbar to display a notification message to user.
+   * General function to manage showing a snackbar to display a notification message to user.
    *
    * @param {string} message The message to dislay to the user.
    * @param {string} [snackType] The type of snackbar/notification to displaly. (Optional, default 'Information')
    * @param {number} [duration] The duration to display the notification for. (Optional, minimum 1 second, maximum 5 seconds, default 5 seconds.)
    * @memberof NotificationService
    */
-  openSnackBar(snackType: SnackBarNotificationType, message: string, duration?: number) {
-    this._snackBar.openFromComponent(SnackbarNotificationComponent, {
-      duration: ((duration !== undefined) || (duration! < this.MIN_DURATION) || (duration! > this.MAX_DURATION) ? duration : this.MAX_DURATION),
-      horizontalPosition: 'start',
-      verticalPosition: 'bottom',
-      panelClass: this.getPanelClass(snackType),
-      data: new SnackBarNotificationArgs(snackType, message, () => { this._snackBar.dismiss() })
-    });
+  show(snackType: SnackBarNotificationType, message: string, duration?: number) {
+    const config: MatSnackBarConfig = new MatSnackBarConfig();
+    config.duration = ((duration !== undefined) || (duration! < this.MIN_DURATION) || (duration! > this.MAX_DURATION) ? duration : this.MAX_DURATION);
+    config.horizontalPosition = 'start';
+    config.verticalPosition = 'bottom';
+    config.panelClass = this.getPanelClass(snackType),
+    config.data = new SnackBarNotificationArgs(snackType, message, () => { this._snackBar.dismiss() })
+
+    this._snackBar.openFromComponent(SnackbarNotificationComponent, config);
   }
 
   /**
@@ -77,7 +78,7 @@ export class NotificationService {
     * @memberof NotificationService
     */
   success(message: string) {
-    this.openSnackBar(SnackBarNotificationType.Success, message);
+    this.show(SnackBarNotificationType.Success, message);
   }
 
   /**
@@ -87,7 +88,7 @@ export class NotificationService {
    * @memberof NotificationService
    */
   warn(message: string) {
-    this.openSnackBar(SnackBarNotificationType.Warning, message);
+    this.show(SnackBarNotificationType.Warning, message);
   }
 
   /**
@@ -97,7 +98,7 @@ export class NotificationService {
    * @memberof NotificationService
    */
   information(message: string) {
-    this.openSnackBar(SnackBarNotificationType.Information, message);
+    this.show(SnackBarNotificationType.Information, message);
   }
 
   /**
@@ -107,7 +108,7 @@ export class NotificationService {
    * @memberof NotificationService
    */
   error(message: string) {
-    this.openSnackBar(SnackBarNotificationType.Error, message);
+    this.show(SnackBarNotificationType.Error, message);
   }
 
   /**
@@ -117,6 +118,6 @@ export class NotificationService {
    * @memberof NotificationService
    */
   help(message: string) {
-    this.openSnackBar(SnackBarNotificationType.Help, message);
+    this.show(SnackBarNotificationType.Help, message);
   }
 }
