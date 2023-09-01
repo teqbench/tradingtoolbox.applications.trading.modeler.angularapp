@@ -1,0 +1,30 @@
+.dialog-container {
+    display: grid;
+    grid-template-areas:
+        "icon title"
+        "content content"
+        "actions actions";
+    grid-template-columns: 48px minmax(auto, 300px);
+    grid-template-rows: 48px auto auto;
+    gap: 10px;
+}
+
+.dialog-icon {
+    grid-area: icon;
+    align-self: end;
+    justify-self: end;
+}
+
+.dialog-title {
+    grid-area: title;
+    align-self: left;
+    justify-self: left;
+}
+
+.dialog-content {
+    grid-area: content;
+}
+
+.dialog-actions {
+    grid-area: actions;
+}
