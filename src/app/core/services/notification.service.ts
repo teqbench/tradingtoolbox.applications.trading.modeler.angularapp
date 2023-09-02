@@ -10,7 +10,7 @@ export class NotificationService {
   private readonly MIN_DURATION: number = 1000;
 
   // The maximum duration to display a notification for in miliseconds.
-  private readonly MAX_DURATION: number = 50000;
+  private readonly MAX_DURATION: number = 4000;
 
   /**
    * Creates an instance of NotificationService.
