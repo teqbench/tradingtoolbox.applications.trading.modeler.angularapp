@@ -1,3 +1,17 @@
+.dashboard-container {
+  display: grid;
+  grid-template-areas: "body";
+  grid-template-columns: auto;
+  gap: 0px;
+  flex-grow : 1;
+}
+
+.dashboard-body {
+  grid-area: body;
+  padding: 16px;
+  min-height: 100vh;
+}
+
 mat-toolbar {
   position: sticky;
   position: -webkit-sticky;
@@ -18,6 +32,10 @@ mat-toolbar {
 
 .toolbar-spacer {
   flex: 1 1 auto;
+}
+
+.toolbar-button-spacer {
+  margin: 5px;
 }
 
 section {
@@ -52,7 +70,7 @@ section {
   width: 120px;
 }
 
-.content {
-  padding: 16px;
-  min-height: 100vh;
-}
+// .content {
+//   padding: 16px;
+//   min-height: 100vh;
+// }
