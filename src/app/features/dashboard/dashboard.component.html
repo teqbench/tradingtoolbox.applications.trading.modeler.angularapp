@@ -1,105 +1,117 @@
 <mat-toolbar class="mat-elevation-z6" color="primary">
-    <mat-toolbar-row>
-      <button mat-icon-button>
-        <mat-icon class="icon-1-5x">view_in_ar</mat-icon>
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <mat-icon class="icon-1-5x">view_in_ar</mat-icon>
     </button>
     <span>Trading Toolbox</span>
-        <span class="toolbar-spacer"></span>
-        <button mat-icon-button [matMenuTriggerFor]="appMenuComplete">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <mat-menu #appMenuComplete="matMenu">
-            <button mat-menu-item>
-                <mat-icon>palette</mat-icon>
-                <span>
-                    <mat-slide-toggle [checked]="isDarkThemeActive" (change)="toggleTheme($event.checked)" labelPosition="before">
-                        Dark Theme
-                    </mat-slide-toggle>
-                </span>
-            </button>
-        </mat-menu>
-    </mat-toolbar-row>
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button matTooltip="Add New Position">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Edit Selected Positions">
+      <mat-icon>app_registration</mat-icon>
+    </button>
+    |
+    <button mat-icon-button matTooltip="Delete Selected Positions">
+      <mat-icon>delete</mat-icon>
+    </button>
+    |
+    <button mat-icon-button [matMenuTriggerFor]="appMenuComplete">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #appMenuComplete="matMenu">
+      <button mat-menu-item>
+        <mat-icon>palette</mat-icon>
+        <span>
+          <mat-slide-toggle [checked]="isDarkThemeActive" (change)="toggleTheme($event.checked)" labelPosition="before">
+            Dark Theme
+          </mat-slide-toggle>
+        </span>
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
 </mat-toolbar>
 <div class="content">
-    <section>
-        <div class="example-label">Basic</div>
-        <div class="example-button-row">
-          <button mat-button>Basic</button>
-          <button mat-button color="primary">Primary</button>
-          <button mat-button color="accent">Accent</button>
-          <button mat-button color="warn">Warn</button>
-          <button mat-button disabled>Disabled</button>
-          <a mat-button href="https://www.google.com/" target="_blank">Link</a>
-        </div>
-      </section>
-      <mat-divider></mat-divider>
-      <section>
-        <div class="example-label">Raised</div>
-        <div class="example-button-row">
-          <button mat-raised-button>Basic</button>
-          <button mat-raised-button color="primary">Primary</button>
-          <button mat-raised-button color="accent">Accent</button>
-          <button mat-raised-button color="warn">Warn</button>
-          <button mat-raised-button disabled>Disabled</button>
-          <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a>
-        </div>
-      </section>
-      <mat-divider></mat-divider>
-      <section>
-        <div class="example-label">Stroked</div>
-        <div class="example-button-row">
-          <button mat-stroked-button>Basic</button>
-          <button mat-stroked-button color="primary">Primary</button>
-          <button mat-stroked-button color="accent">Accent</button>
-          <button mat-stroked-button color="warn">Warn</button>
-          <button mat-stroked-button disabled>Disabled</button>
-          <a mat-stroked-button href="https://www.google.com/" target="_blank">Link</a>
-        </div>
-      </section>
-      <mat-divider></mat-divider>
-      <section>
-        <div class="example-label">Flat</div>
-        <div class="example-button-row">
-          <button mat-flat-button>Basic</button>
-          <button mat-flat-button color="primary">Primary</button>
-          <button mat-flat-button color="accent">Accent</button>
-          <button mat-flat-button color="warn">Warn</button>
-          <button mat-flat-button disabled>Disabled</button>
-          <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>
-        </div>
-      </section>
-      <mat-divider></mat-divider>
-      <section>
-        <div class="example-label">Icon</div>
-        <div class="example-button-row">
-          <div class="example-flex-container">
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-              <mat-icon>home</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
-              <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
-              <mat-icon>favorite</mat-icon>
-            </button>
-            <button mat-icon-button disabled aria-label="Example icon button with a open in new tab icon">
-              <mat-icon>open_in_new</mat-icon>
-            </button>
-          </div>
-        </div>
-      </section>
-      <mat-divider></mat-divider>
-      <section>
-        <button mat-flat-button color="primary" (click)="testConfirmationDialog()">Test Confirmation Dialog Implementation</button>
-      </section>
-      <mat-divider></mat-divider>
-      <button mat-stroked-button color="primary" (click)="showSuccessSnackbar()">Success</button>
-      <button mat-stroked-button color="primary" (click)="showInformationSnackbar()">Information</button>
-      <button mat-stroked-button color="primary" (click)="showWarningSnackbar()">Warning</button>
-      <button mat-stroked-button color="primary" (click)="showErrorSnackbar()">Error</button>
-      <button mat-stroked-button color="primary" (click)="showHelpSnackbar()">Help</button>
+  <section>
+    <div class="example-label">Basic</div>
+    <div class="example-button-row">
+      <button mat-button>Basic</button>
+      <button mat-button color="primary">Primary</button>
+      <button mat-button color="accent">Accent</button>
+      <button mat-button color="warn">Warn</button>
+      <button mat-button disabled>Disabled</button>
+      <a mat-button href="https://www.google.com/" target="_blank">Link</a>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Raised</div>
+    <div class="example-button-row">
+      <button mat-raised-button>Basic</button>
+      <button mat-raised-button color="primary">Primary</button>
+      <button mat-raised-button color="accent">Accent</button>
+      <button mat-raised-button color="warn">Warn</button>
+      <button mat-raised-button disabled>Disabled</button>
+      <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Stroked</div>
+    <div class="example-button-row">
+      <button mat-stroked-button>Basic</button>
+      <button mat-stroked-button color="primary">Primary</button>
+      <button mat-stroked-button color="accent">Accent</button>
+      <button mat-stroked-button color="warn">Warn</button>
+      <button mat-stroked-button disabled>Disabled</button>
+      <a mat-stroked-button href="https://www.google.com/" target="_blank">Link</a>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Flat</div>
+    <div class="example-button-row">
+      <button mat-flat-button>Basic</button>
+      <button mat-flat-button color="primary">Primary</button>
+      <button mat-flat-button color="accent">Accent</button>
+      <button mat-flat-button color="warn">Warn</button>
+      <button mat-flat-button disabled>Disabled</button>
+      <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Icon</div>
+    <div class="example-button-row">
+      <div class="example-flex-container">
+        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+          <mat-icon>home</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <button mat-icon-button disabled aria-label="Example icon button with a open in new tab icon">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </div>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <button mat-flat-button color="primary" (click)="testConfirmationDialog()">Test Confirmation Dialog
+      Implementation</button>
+  </section>
+  <mat-divider></mat-divider>
+  <button mat-stroked-button color="primary" (click)="showSuccessSnackbar()">Success</button>
+  <button mat-stroked-button color="primary" (click)="showInformationSnackbar()">Information</button>
+  <button mat-stroked-button color="primary" (click)="showWarningSnackbar()">Warning</button>
+  <button mat-stroked-button color="primary" (click)="showErrorSnackbar()">Error</button>
+  <button mat-stroked-button color="primary" (click)="showHelpSnackbar()">Help</button>
 
 </div>
