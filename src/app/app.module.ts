@@ -20,6 +20,7 @@ import { ThemeService } from './core/services/theme.service';
 import { CurrencyExtendedPipe } from './shared/pipes/currency-extended.pipe'
 
 // Shared Directives
+import { AutoCompleteOffDirective } from './shared/directives/auto-complete-off.directive';
 
 // App Features
 import { DashboardComponent } from './features/dashboard/dashboard.component';
@@ -30,7 +31,8 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
     ConfirmationDialogComponent,
     DashboardComponent,
     SnackbarNotificationComponent,
-    CurrencyExtendedPipe
+    CurrencyExtendedPipe,
+    AutoCompleteOffDirective
   ],
   imports: [
     BrowserModule,
