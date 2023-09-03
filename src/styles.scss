@@ -1,11 +1,13 @@
 html,
 body {
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
 }
 
 .mat-icon-button.large {
