@@ -83,7 +83,7 @@ $light-theme: mat.define-light-theme((color: (primary: $light-primary-palette,
 
     .warning-snackbar.mat-mdc-snack-bar-container {
         .mdc-snackbar__surface {
-            background: mat.get-color-from-palette(mat.$orange-palette, A400);
+            background: mat.get-color-from-palette(mat.$amber-palette, A400);
         }
 
         .mat-mdc-button {
@@ -169,7 +169,7 @@ $light-theme: mat.define-light-theme((color: (primary: $light-primary-palette,
 
     .warning-snackbar.mat-mdc-snack-bar-container {
         .mdc-snackbar__surface {
-            background: mat.get-color-from-palette(mat.$orange-palette, A400);
+            background: mat.get-color-from-palette(mat.$amber-palette, A400);
         }
 
         .mat-mdc-button {
