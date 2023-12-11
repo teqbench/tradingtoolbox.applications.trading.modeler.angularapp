@@ -8,23 +8,37 @@ $dark-primary-palette: mat.define-palette(mat.$grey-palette, 500, 200, 700);
 $dark-accent-palette: mat.define-palette(mat.$grey-palette, 100, 50, 200);
 $dark-warn-palette: mat.define-palette(mat.$red-palette, A200, A100, A400);
 
-$dark-theme: mat.define-dark-theme((color: (primary: $dark-primary-palette,
-                accent: $dark-accent-palette,
-                warn: $dark-warn-palette,
-            )));
+$dark-theme: mat.define-dark-theme((
+    color: (
+        primary: $dark-primary-palette,
+        accent: $dark-accent-palette,
+        warn: $dark-warn-palette,
+    )
+));
 
 // Define light theme
 $light-primary-palette: mat.define-palette(mat.$blue-palette);
 $light-accent-palette: mat.define-palette(mat.$blue-palette, 200, 50, 500);
 $light-warn-palette: mat.define-palette(mat.$red-palette);
 
-$light-theme: mat.define-light-theme((color: (primary: $light-primary-palette,
-                accent: $light-accent-palette,
-                warn: $light-warn-palette,
-            )));
+$light-theme: mat.define-light-theme((
+    color: (
+        primary: $light-primary-palette,
+        accent: $light-accent-palette,
+        warn: $light-warn-palette,
+    )
+));
 
-// Apply the light theme by default.
+// // Apply the light theme by default.
+// @include mat.core-theme($light-theme);
+// @include mat.button-theme($light-theme);
+
+// Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme($light-theme);
+
+// Emit styles for MatButton based on `$my-theme`. Because the configuration
+// passed to `define-light-theme` omits typography, `button-theme` will not
+// emit any typography styles.
 @include mat.button-theme($light-theme);
 
 // Define dark theme CSS class to be applied when user toggles theme.
