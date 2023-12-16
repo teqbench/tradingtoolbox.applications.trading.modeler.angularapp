@@ -1,0 +1,121 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+mat-table {
+  width: 100%;
+  //overflow: scroll;
+  border-collapse: collapse; // Need to add this in order to get the border properties set for the mat-row/mat-header-row to work (set below)
+}
+
+mat-cell {
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.cell-center-content {
+  text-align: center !important;
+  justify-content: center;
+}
+
+.row-narrow {
+  min-height: 32px !important;
+}
+
+mat-header-cell {
+  padding-top: 2xp;
+  padding-right: 3px;
+  padding-left: 3px;
+  padding-bottom: 1px;
+}
+
+mat-cell,
+mat-header-cell {
+  width: auto;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: center;
+}
+
+mat-row,
+mat-header-row {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+}
+
+// Position classes
+.mat-column-position-parameter {
+  flex: 0 0 100px;
+}
+
+.mat-group-position-parameters {
+  flex: 0 0 100px;
+}
+
+.mat-column-position-value {
+  flex: 0 0 105px;
+}
+
+.mat-group-position-value {
+  flex: 0 0 334px;
+}
+
+// Trading classes
+// For the trading parameter columns/groups, do not apply sizing as let these
+// columns size themselve in the table
+
+// Gains classes
+.mat-column-gain-parameter {
+  flex: 0 0 90px;
+}
+
+.mat-group-gain-parameters {
+  flex: 0 0 192px;
+}
+
+// For the gains value columns/groups, do not apply sizing as let these
+// columns size themselve in the table
+
+// Profit classes
+.mat-column-profit-value {
+  flex: 0 0 95px;
+}
+
+.mat-group-profit-value {
+  flex: 0 0 406px;
+}
+
+// Cost classes
+.mat-column-cost-parameter {
+  flex: 0 0 80px;
+}
+
+.mat-group-cost-parameters {
+  flex: 0 0 259px;
+}
+
+// Action classes
+.mat-column-actions {
+  flex: 0 0 85px;
+}
+
+.mat-group-actions {
+  flex: 0 0 90px;
+}
+
+// Month classes
+.mat-column-month {
+  flex: 0 0 40px;
+}
+
+.mat-group-month {
+  flex: 0 0 40px;
+}
+
+.section-header {
+  font-weight: bold;
+  font-size: medium;
+}
+

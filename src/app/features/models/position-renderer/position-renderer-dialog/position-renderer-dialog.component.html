@@ -1,0 +1,369 @@
+<div fxLayout="row" fxLayoutGap="20px" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <div fxLayout="row" fxLayoutGap="15px" cdkDragHandle class="drag-handle">
+        <div fxLayout="column">
+            <mat-icon class="icon-2x">view_in_ar</mat-icon>
+        </div>
+        <div fxLayout="column">
+            <h1 mat-dialog-title>Rendered Position - {{current.name}}</h1>
+        </div>
+    </div>
+    <div fxFlex></div>
+    <div fxLayout="row" fxLayoutAlign="start start" class="highlight" style="width: 600px;" fxLayoutGap="10px"
+        *ngIf="current.isBotCandidate">
+        <div fxLayout="column">
+            <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start start" fxFlex fxFill>
+            {{current.botCandidateMessage}}
+        </div>
+    </div>
+</div>
+<div mat-dialog-content>
+    <div fxLayout="column" fxLayoutGap="20px">
+        <div fxLayout="column">
+            <!-- These table headers in this dialog for some reason cause the UI to be jumpy when the input editor is displayed.
+            Comment out for now. -->
+            <!-- <div fxLayout="column" class="section-header">Position Parameters</div> -->
+            <div fxLayout="column">
+                <mat-table #positionInputTable id="positionInputTable" [dataSource]="positions">
+
+                    <!-- POSITION Group -->
+                    <!-- Share Price Column -->
+                    <ng-container matColumnDef="pricePerShare">
+                        <mat-header-cell class="mat-column-position-parameter" *matHeaderCellDef>$ / Share
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-position-parameter" *matCellDef="let element">
+                            {{element.pricePerShare |
+                            currencyExtended: 'symbol' : '1.0-2'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- TRADING Group -->
+                    <!-- Ave. Positions / Day Column -->
+                    <ng-container matColumnDef="averageNumberOfPositionsPerDay">
+                        <mat-header-cell class="cell-border-left" *matHeaderCellDef>Ave. #<br />Positions / Day
+                        </mat-header-cell>
+                        <mat-cell class="cell-border-left" *matCellDef="let element">
+                            {{element.averageNumberOfPositionsPerDay | number: '1.0'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Ave. Lots / Position Column -->
+                    <ng-container matColumnDef="averageNumberOfLotsPerPosition">
+                        <mat-header-cell *matHeaderCellDef>Ave. #<br />Lots / Position
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            {{element.averageNumberOfLotsPerPosition | number: '1.0'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Est. Success Rate Column -->
+                    <ng-container matColumnDef="estimatedSuccessRate">
+                        <mat-header-cell *matHeaderCellDef
+                            matTooltip="The estimated success rate is simply the number of successful 'asks' (i.e. sales) for a position's lots. It assumes only ONE successful 'bid' to get into a position.">
+                            Est. Trade<br />Success Rate</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.estimatedSuccessRate | percent: '1.0-3'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Total number of asks per position Column -->
+                    <ng-container matColumnDef="totalNumberOfAsks">
+                        <mat-header-cell *matHeaderCellDef>Total # Asks<br />All Positions / Day</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.totalNumberOfAsks}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Adjusted number of asks per position Column -->
+                    <ng-container matColumnDef="adjustedNumbersOfAsks">
+                        <mat-header-cell *matHeaderCellDef>Adjusted # Asks<br />All Positions / Day</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.adjustedNumbersOfAsks | number: '1.0-3'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Ave. # Trading Days / Week Column -->
+                    <ng-container matColumnDef="averageNumberOfTradingDaysPerWeek">
+                        <mat-header-cell *matHeaderCellDef>Ave. # Trading<br />Days / Week</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            {{element.averageNumberOfTradingDaysPerWeek}}</mat-cell>
+                    </ng-container>
+
+                    <!-- GAINS Group -->
+                    <!-- Target Gain Column -->
+                    <ng-container matColumnDef="targetGain">
+                        <mat-header-cell class="mat-column-gain-parameter cell-border-left" *matHeaderCellDef>Target
+                            %<br />Gain
+                            / Position
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-gain-parameter cell-border-left" *matCellDef="let element">
+                            {{element.targetGain|
+                            percent: '1.0-3'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Ave. Lot Gain Column -->
+                    <ng-container matColumnDef="averageGainPerLot">
+                        <mat-header-cell class="mat-column-gain-parameter" *matHeaderCellDef>Ave. %<br />Gain / Lot
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-gain-parameter" *matCellDef="let element">
+                            {{element.averageGainPerLot |
+                            percent: '1.0-3'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- COSTS Group -->
+                    <!-- Expenses Column -->
+                    <ng-container matColumnDef="expenses">
+                        <mat-header-cell class="mat-column-cost-parameter cell-border-left" *matHeaderCellDef
+                            matTooltip="Expenses are deducted from monthly and yearly agains in each rendered scenario.">
+                            Ave.
+                            Monthly<br />Expenses</mat-header-cell>
+                        <mat-cell class="mat-column-cost-parameter cell-border-left" *matCellDef="let element">
+                            {{-1*element.expenses | currencyExtended: 'symbol' : '1.0-2'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Effective Tax Rate Column -->
+                    <ng-container matColumnDef="effectiveTaxRate">
+                        <mat-header-cell class="mat-column-cost-parameter" *matHeaderCellDef>Effective<br />Tax %
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-cost-parameter" *matCellDef="let element">{{element.effectiveTaxRate
+                            |
+                            percent: '1.0-2'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Fees Column -->
+                    <ng-container matColumnDef="estimatedFeePerTransaction">
+                        <mat-header-cell class="mat-column-cost-parameter" *matHeaderCellDef>Fees</mat-header-cell>
+                        <mat-cell class="mat-column-cost-parameter" *matCellDef="let element">
+                            {{-1*element.estimatedFeePerTransaction | currencyExtended: 'symbol' : '1.0-2'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- ACTIONS Group -->
+                    <!-- Action Column -->
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell class="mat-column-actions cell-border-left" *matHeaderCellDef>Actions
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-actions cell-border-left" *matCellDef="let element">
+                            <button mat-icon-button matTooltip="Edit & Render This Position"
+                                (click)="openEditPositionDialog(element)">
+                                <mat-icon>app_registration</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Duplicate & Render This Position"
+                                (click)="openDuplicateModelDialog(element)">
+                                <mat-icon>content_copy</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Header row position group -->
+                    <ng-container matColumnDef="header-row-position-group">
+                        <mat-header-cell class="mat-group-position-parameters" *matHeaderCellDef>Position
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header row trading group -->
+                    <ng-container matColumnDef="header-row-trading-group">
+                        <mat-header-cell *matHeaderCellDef [attr.colspan]="6" class="cell-center-content">
+                            Trading
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header row gains group -->
+                    <ng-container matColumnDef="header-row-gains-group">
+                        <mat-header-cell *matHeaderCellDef [attr.colspan]="2"
+                            class="mat-group-gain-parameters cell-center-content">
+                            Gains
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header row costs group -->
+                    <ng-container matColumnDef="header-row-costs-group">
+                        <mat-header-cell *matHeaderCellDef [attr.colspan]="3"
+                            class="mat-group-cost-parameters cell-center-content">
+                            Costs
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header actions group -->
+                    <ng-container matColumnDef="header-row-spacer-2-group">
+                        <mat-header-cell *matHeaderCellDef class="mat-group-actions">&nbsp;</mat-header-cell>
+                    </ng-container>
+
+                    <mat-header-row class="row-narrow"
+                        *matHeaderRowDef="['header-row-position-group', 'header-row-trading-group', 'header-row-gains-group', 'header-row-costs-group', 'header-row-spacer-2-group']">
+                    </mat-header-row>
+
+                    <mat-header-row *matHeaderRowDef="modelsTableDisplayColumns; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: modelsTableDisplayColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <!-- These table headers in this dialog for some reason cause the UI to be jumpy when the input editor is displayed.
+            Comment out for now. -->
+            <!-- <div fxLayout="column" class="section-header">Rendered Position Scenarios</div> -->
+            <div fxLayout="column">
+                <mat-table #scenarioTable id="scenarioTable" [dataSource]="scenarios">
+                    <!-- Month Column -->
+                    <ng-container matColumnDef="month">
+                        <mat-header-cell class="mat-column-month" *matHeaderCellDef>Month</mat-header-cell>
+                        <mat-cell class="mat-column-month" *matCellDef="let element; let i = index">{{i + 1}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Position Value Column -->
+                    <ng-container matColumnDef="value">
+                        <mat-header-cell *matHeaderCellDef matTooltipPosition="above"
+                            matTooltip="Value of position at start of a month. The monthly gains are added to the previous month's initial value to get value of the position."
+                            class="mat-column-position-value cell-border-left">
+                            $ Value<br />1 Position</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="mat-column-position-value cell-border-left">
+                            {{element.sizing.value | currencyExtended: 'symbol' : '1.0-0'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Size Column -->
+                    <ng-container matColumnDef="size">
+                        <mat-header-cell class="mat-column-position-value" *matHeaderCellDef># Shares<br />1 Position
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-position-value" *matCellDef="let element">
+                            {{element.sizing.numberOfSharesInPosition | number:'1.0-2'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Ave. Lots Size Column -->
+                    <ng-container matColumnDef="averageLotSize">
+                        <mat-header-cell class="mat-column-position-value" *matHeaderCellDef>Ave.<br /># Shares / Lot
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-position-value" *matCellDef="let element">
+                            {{(element.sizing.averageLotSize) | number: '1.0-2'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Position Gross Profts 1 Position Column -->
+                    <ng-container matColumnDef="grossSinglePosition">
+                        <mat-header-cell class="mat-column-profit-value cell-border-left" *matHeaderCellDef>Gross<br />1
+                            Position
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-profit-value cell-border-left" *matCellDef="let element">
+                            {{element.profits.grossSinglePosition |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Position Adjusted Gross Profts 1 Position Column -->
+                    <ng-container matColumnDef="adjustedGrossSinglePosition">
+                        <mat-header-cell class="mat-column-profit-value" *matHeaderCellDef
+                            matTooltip="The gross is adjusted based on the estimated success rate of asks/sales. This is done because impossible to be 100% so, in an attempt to make more realistic model scenarios, adjust the gross.">
+                            Adjusted Gross<br />1 Position
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-profit-value" *matCellDef="let element">
+                            {{element.profits.adjustedGrossSinglePosition |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Position Net Profts 1 Position Column -->
+                    <ng-container matColumnDef="netSinglePosition">
+                        <mat-header-cell class="mat-column-profit-value" *matHeaderCellDef
+                            matTooltip="This is the profit after all taxes and fees are applied.">Net<br />1
+                            Position
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-profit-value" *matCellDef="let element">
+                            {{element.profits.netSinglePosition
+                            |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Position Gross Profts All Positions Column -->
+                    <ng-container matColumnDef="netAllPositions">
+                        <mat-header-cell class="mat-column-profit-value" *matHeaderCellDef>Net<br />All Positions
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-profit-value" *matCellDef="let element">
+                            {{element.profits.netAllPositions |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Position Gains Columns -->
+                    <!-- <ng-container matColumnDef="gainsDaily">
+                <mat-header-cell *matHeaderCellDef>Gains<br/>Daily</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.gains.gainsDaily | currencyExtended}}</mat-cell>
+            </ng-container> -->
+                    <ng-container matColumnDef="gainsWeekly">
+                        <mat-header-cell class="cell-border-left" *matHeaderCellDef>Weekly<br />All Positions
+                        </mat-header-cell>
+                        <mat-cell class="cell-border-left" *matCellDef="let element">{{element.gains.gainsWeekly |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="gainsMonthly">
+                        <mat-header-cell *matHeaderCellDef>Monthly<br />All Positions
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.gains.gainsMonthly |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="gainsYearly">
+                        <mat-header-cell *matHeaderCellDef>Yearly<br />All Positions
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.gains.gainsYearly |
+                            currencyExtended: 'symbol' : '1.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell class="mat-column-actions cell-border-left" *matHeaderCellDef>Actions
+                        </mat-header-cell>
+                        <mat-cell class="mat-column-actions cell-border-left" *matCellDef="let element">
+                            <button mat-icon-button matTooltip="View Scenario's Lot Details"
+                                (click)="openLotsDialog(element.lots)">
+                                <mat-icon>price_change</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="View Scenario's Fees"
+                                (click)="openFeesDialog(element.fees)">
+                                <mat-icon>receipt</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Header month group -->
+                    <ng-container matColumnDef="header-row-spacer-1-group">
+                        <mat-header-cell *matHeaderCellDef class="mat-group-month">&nbsp;</mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header position group -->
+                    <ng-container matColumnDef="header-row-position-group">
+                        <mat-header-cell *matHeaderCellDef [attr.colspan]="3"
+                            class="mat-group-position-value cell-center-content">
+                            Position Sizing
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header daily profits group -->
+                    <ng-container matColumnDef="header-row-daily-profits-group">
+                        <mat-header-cell *matHeaderCellDef [attr.colspan]="4"
+                            class="mat-group-profit-value cell-center-content">
+                            Daily Profits
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header gains group -->
+                    <ng-container matColumnDef="header-row-gains-group">
+                        <mat-header-cell *matHeaderCellDef [attr.colspan]="3" class="cell-center-content">
+                            Gains
+                        </mat-header-cell>
+                    </ng-container>
+
+                    <!-- Header spacer group -->
+                    <ng-container matColumnDef="header-row-spacer-2-group">
+                        <mat-header-cell *matHeaderCellDef class="mat-group-actions">&nbsp;</mat-header-cell>
+                    </ng-container>
+
+                    <mat-header-row class="row-narrow"
+                        *matHeaderRowDef="['header-row-spacer-1-group', 'header-row-position-group', 'header-row-daily-profits-group', 'header-row-gains-group', 'header-row-spacer-2-group']">
+                    </mat-header-row>
+                    <mat-header-row *matHeaderRowDef="scenariosTableDisplayColumns; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: scenariosTableDisplayColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-icon-button matTooltip="Render First Position" (click)="navToFirstPositionAndRender()" [disabled]="isFirst"><mat-icon>first_page</mat-icon></button>
+    <button mat-button mat-icon-button matTooltip="Render Previous Position" (click)="navToPreviousPositionAndRender()" [disabled]="isFirst"><mat-icon>navigate_before</mat-icon></button>
+    <button mat-button mat-icon-button matTooltip="Render Next Position" (click)="navToNextPositionAndRender()" [disabled]="isLast"><mat-icon>navigate_next</mat-icon></button>
+    <button mat-button mat-icon-button matTooltip="Render Last Position" (click)="navToLastPositionAndRender()" [disabled]="isLast"><mat-icon>last_page</mat-icon></button>
+    <div fxFlex></div>
+    <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+</div>

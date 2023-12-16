@@ -1,0 +1,41 @@
+<div fxLayout="row" fxLayoutGap="20px" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <div fxLayout="row" fxLayoutGap="15px" cdkDragHandle class="drag-handle">
+        <div fxLayout="column">
+            <mat-icon class="icon-2x">receipt</mat-icon>
+        </div>
+        <div fxLayout="column">
+            <h1 mat-dialog-title>Fees</h1>
+        </div>
+    </div>
+</div>
+<div mat-dialog-content>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="feesSinglePositionDaily">
+            <mat-header-cell *matHeaderCellDef>Fees 1 Position</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{-1*element.feesSinglePositionDaily | currencyExtended}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="feesAllPositionsDaily">
+            <mat-header-cell *matHeaderCellDef>Fees All Positions</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{-1*element.feesAllPositionsDaily | currencyExtended}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="feesWeekly">
+            <mat-header-cell *matHeaderCellDef>Fees Weekly (All)</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{-1*element.feesWeekly | currencyExtended}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="feesMonthly">
+            <mat-header-cell *matHeaderCellDef>Fees Monthly (All)</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{-1*element.feesMonthly | currencyExtended}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="feesYearly">
+            <mat-header-cell *matHeaderCellDef>Fees Yearly (All)</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{-1*element.feesYearly | currencyExtended}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="modelOutputDisplayColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: modelOutputDisplayColumns;"></mat-row>
+    </mat-table>
+</div>
+<div mat-dialog-actions>
+    <div fxFlex></div>
+    <button mat-button mat-dialog-close>Close</button>
+</div>

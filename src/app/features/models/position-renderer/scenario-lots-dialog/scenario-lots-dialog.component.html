@@ -1,0 +1,65 @@
+<div fxLayout="row" fxLayoutGap="20px" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <div fxLayout="row" fxLayoutGap="15px" cdkDragHandle class="drag-handle">
+        <div fxLayout="column">
+            <mat-icon class="icon-2x">price_change</mat-icon>
+        </div>
+        <div fxLayout="column">
+            <h1 mat-dialog-title>Lot Detail / 1 Position</h1>
+        </div>
+    </div>
+</div>
+<div mat-dialog-content>
+    <mat-table [dataSource]="dataSource">
+        <!-- Lot Number Column -->
+        <ng-container matColumnDef="lotNumber">
+            <mat-header-cell *matHeaderCellDef>Lot Number</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index">{{i + 1}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef>Totals</mat-footer-cell>
+        </ng-container>
+
+        <!-- Lot Initial Value Column -->
+        <ng-container matColumnDef="initialValue">
+            <mat-header-cell *matHeaderCellDef>Initial Value</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.initialValue | currencyExtended: 'symbol' : '1.2'}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef>{{getTotalInitialValue() | currencyExtended: 'symbol' : '1.0-2'}}
+            </mat-footer-cell>
+        </ng-container>
+
+        <!-- Lot Share Count Column -->
+        <ng-container matColumnDef="shareCount">
+            <mat-header-cell *matHeaderCellDef># Shares</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.shareCount | number: '1.2'}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef>{{getTotalShareCount() | number: '1.0-2'}}</mat-footer-cell>
+        </ng-container>
+
+        <!-- Lot Sell Price Column -->
+        <ng-container matColumnDef="sellPrice">
+            <mat-header-cell *matHeaderCellDef>Lot Sell Price</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.sellPrice | currencyExtended: 'symbol' : '1.2-4'}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <!-- Lot Value Column -->
+        <ng-container matColumnDef="value">
+            <mat-header-cell *matHeaderCellDef>Value</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.value | currencyExtended: 'symbol' : '1.2'}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <!-- Lot Gross Profit Column -->
+        <ng-container matColumnDef="grossProfit">
+            <mat-header-cell *matHeaderCellDef>Daily Gross Profit</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.grossProfit | currencyExtended: 'symbol' : '1.2'}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef>{{getTotalGrossProfit() | currencyExtended: 'symbol' : '1.0-2'}}
+            </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="modelOutputDisplayColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: modelOutputDisplayColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="modelOutputDisplayColumns; sticky: true"></mat-footer-row>
+    </mat-table>
+</div>
+<div mat-dialog-actions>
+    <div fxFlex></div>
+    <button mat-button mat-dialog-close>Close</button>
+</div>

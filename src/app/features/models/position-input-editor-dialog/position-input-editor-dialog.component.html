@@ -1,0 +1,278 @@
+<div fxLayout="row" fxLayoutGap="20px" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <div fxLayout="row" fxLayoutGap="15px" cdkDragHandle class="drag-handle">
+        <div fxLayout="column">
+            <mat-icon class="icon-2x">{{icon}}</mat-icon>
+        </div>
+        <div fxLayout="column">
+            <h1 mat-dialog-title>{{title}}</h1>
+        </div>
+    </div>
+    <div fxFlex></div>
+    <div fxLayout="row" fxLayoutAlign="start start" class="highlight" style="width: 600px;" fxLayoutGap="10px"
+        *ngIf="position.isBotCandidate">
+        <div fxLayout="column">
+            <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start start">
+            {{position.botCandidateMessage}}
+        </div>
+    </div>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <div fxFill fxLayout="column" fxFill fxLayoutGap="5px">
+            <div fxLayout="row" fxFill *ngIf="!isEditingMultiple">
+                <div fxFill fxLayout="column" fxFill>
+                    <div fxLayout="row" fxFill>
+                        <div class="section-header">General Info</div>
+                    </div>
+                    <div fxLayout="row" fxFill fxLayoutGap="10px">
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-form-field>
+                                <mat-label>Name</mat-label>
+                                <input matInput autoCompleteOff type="text" minlength="3" maxlength="50"
+                                    formControlName="modelName" required />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFill>
+                <div fxFill fxLayout="column" fxFill>
+                    <div fxLayout="row" fxFill>
+                        <div class="section-header">Sizing</div>
+                    </div>
+                    <div fxLayout="row" fxFill fxLayoutGap="10px">
+                        <div fxLayout="column" class="form-input-field" *ngIf="!isEditingMultiple">
+                            <mat-form-field>
+                                <mat-label>Initial Value</mat-label>
+                                <span matPrefix>$&nbsp;</span>
+                                <input matInput autoCompleteOff type="number" min="0.01" max="10000000" step="0.25"
+                                    formControlName="initialValue" required />
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.PricePerShare, 'pricePerShare')"
+                                [checked]="selection.isSelected(FieldKeysType.PricePerShare)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-form-field>
+                                <mat-label>Share Price</mat-label>
+                                <input matInput autoCompleteOff type="number" min="0.0000000000000001" max="1000000"
+                                    step="0.25" formControlName="pricePerShare" required />
+                                <span matPrefix>$&nbsp;</span>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" class="form-input-field" *ngIf="!isEditingMultiple">
+                            <mat-label># Shares / Position: {{position.numberOfSharesInPosition | number : '1.0-6'}}
+                            </mat-label>
+                        </div>
+                        <div fxLayout="column" class="form-input-field" *ngIf="!isEditingMultiple">
+                            <mat-label># Shares / Lot: {{position.averageLotSize | number : '1.0-6'}}</mat-label>
+                        </div>
+                        <div fxFlex *ngIf="isEditingMultiple"></div>
+                        <div fxLayout="column" class="form-input-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox 
+                                (change)="$event ? masterToggle() : null" 
+                                [checked]="selection.hasValue() && isAllSelected"
+                                [indeterminate]="selection.hasValue() && !isAllSelected">
+                                Include/Exclude All Fields
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            &nbsp;
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFill>
+                <div fxLayout="column" fxFill>
+                    <div fxLayout="row" fxFill>
+                        <div class="section-header">Trading</div>
+                    </div>
+                    <div fxLayout="row" fxFill fxLayoutGap="10px">
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.AverageNumberOfPositionsPerDay, 'averageNumberOfPositionsPerDay')"
+                                [checked]="selection.isSelected(FieldKeysType.AverageNumberOfPositionsPerDay)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Average # Positions / Day: {{position.averageNumberOfPositionsPerDay}}
+                            </mat-label>
+                            <mat-slider [min]="1" [max]="24" [step]="1" [tickInterval]="1"
+                                (input)="onAverageNumberOfPositionsPerDayInputChange($event)"
+                                formControlName="averageNumberOfPositionsPerDay">
+                            </mat-slider>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.AverageNumberOfLotsPerPosition, 'averageNumberOfLotsPerPosition')"
+                                [checked]="selection.isSelected(FieldKeysType.AverageNumberOfLotsPerPosition)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Average # Lots / Position: {{position.averageNumberOfLotsPerPosition}}
+                            </mat-label>
+                            <mat-slider [min]="1" [max]="100" [step]="1" [tickInterval]="1"
+                                (input)="onAverageNumberOfLotsPerPositionInputChange($event)"
+                                formControlName="averageNumberOfLotsPerPosition">
+                            </mat-slider>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.AverageNumberOfTradingDaysPerWeek, 'averageNumberOfTradingDaysPerWeek')"
+                                [checked]="selection.isSelected(FieldKeysType.AverageNumberOfTradingDaysPerWeek)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Average # Trading Days / Week: {{position.averageNumberOfTradingDaysPerWeek}}
+                            </mat-label>
+                            <mat-slider [min]="1" [max]="7" [step]="1" [tickInterval]="1"
+                                (input)="onAverageNumberOfTradingDaysPerWeekInputChange($event)"
+                                formControlName="averageNumberOfTradingDaysPerWeek">
+                            </mat-slider>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.EstimatedSuccessRate, 'estimatedSuccessRate')"
+                                [checked]="selection.isSelected(FieldKeysType.EstimatedSuccessRate)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Estimated Trade Success Rate: {{position.estimatedSuccessRate | percent:
+                                '1.2'}}
+                            </mat-label>
+                            <mat-slider [min]="0" [max]="1" [step]="0.0025" [tickInterval]="40"
+                                (input)="onEstimatedSuccessRateInputChange($event)"
+                                formControlName="estimatedSuccessRate">
+                            </mat-slider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFill>
+                <div fxFill fxLayout="column" fxFill>
+                    <div fxLayout="row" fxFill>
+                        <div class="section-header">Gains</div>
+                    </div>
+                    <div fxLayout="row" fxFill fxLayoutGap="10px">
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.TargetGain, 'targetGain')"
+                                [checked]="selection.isSelected(FieldKeysType.TargetGain)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Target % Gain / Position: {{position.targetGain | percent: '1.2'}}</mat-label>
+                            <mat-slider [min]="0" [max]="1" [step]="0.0025" [tickInterval]="40"
+                                (input)="onTargetGainInputChange($event)" formControlName="targetGain">
+                            </mat-slider>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            &nbsp;
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Average % Gain / Lot: {{position.averageGainPerLot | percent: '1.2'}}
+                            </mat-label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFill>
+                <div fxFill fxLayout="column" fxFill>
+                    <div fxLayout="row" fxFill>
+                        <div class="section-header">Costs</div>
+                    </div>
+                    <div fxLayout="row" fxFill fxLayoutGap="10px">
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.FederalTaxRate, 'federalTaxRate')"
+                                [checked]="selection.isSelected(FieldKeysType.FederalTaxRate)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-form-field>
+                                <mat-label>Fed Tax Rate</mat-label>
+                                <mat-select formControlName="federalTaxRate" required
+                                    panelClass="select-panel-wide-content"
+                                    (selectionChange)="onFederalTaxRateInputChange($event)">
+                                    <mat-optgroup *ngFor="let group of federalTaxGroups" [label]="group.name"
+                                        [disabled]="group.disabled">
+                                        <mat-option *ngFor="let tax of group.taxes" [value]="tax.value">
+                                            {{tax.viewValue}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.StateTaxRate, 'stateTaxRate')"
+                                [checked]="selection.isSelected(FieldKeysType.StateTaxRate)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-form-field>
+                                <mat-label>State Tax Rate</mat-label>
+                                <mat-select formControlName="stateTaxRate" required
+                                    (selectionChange)="onStateTaxRateInputChange($event)">
+                                    <mat-optgroup *ngFor="let group of stateTaxGroups" [label]="group.name"
+                                        [disabled]="group.disabled">
+                                        <mat-option *ngFor="let tax of group.taxes" [value]="tax.value">
+                                            {{tax.viewValue}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            &nbsp;
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Effective Tax Rate: {{position.effectiveTaxRate | percent : '1.0-2'}}
+                            </mat-label>
+                        </div>
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.Fees, 'fees')"
+                                [checked]="selection.isSelected(FieldKeysType.Fees)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-form-field>
+                                <mat-label>Fees</mat-label>
+                                <span matPrefix>$&nbsp;</span>
+                                <input matInput autoCompleteOff type="number" min="0" max="100000" step="0.25"
+                                    formControlName="fees" required />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFill>
+                <div fxFill fxLayout="column" fxFill>
+                    <div fxLayout="row" fxFill>
+                        <div class="section-header">Optional Costs</div>
+                    </div>
+                    <div fxLayout="row" fxFill fxLayoutGap="10px">
+                        <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
+                            <mat-checkbox
+                                (change)="onIncludeCheckboxChange($event, FieldKeysType.Expenses, 'expenses')"
+                                [checked]="selection.isSelected(FieldKeysType.Expenses)"></mat-checkbox>
+                        </div>
+                        <div fxLayout="column" class="form-input-field">
+                            <mat-label>Average Monthly Expenses: {{position.expenses | currencyExtended: 'symbol' :
+                                '1.0'}}</mat-label>
+                            <mat-slider [min]="0" [max]="100000" [step]="250" [tickInterval]="10"
+                                (input)="onExpensesInputChange($event)" formControlName="expenses">
+                            </mat-slider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button type="reset" [disabled]="isResetDisabled" (click)="onResetClick()">Reset</button>
+    <div fxFlex></div>
+    <button mat-button (click)="onCancelClick()" cdkFocusInitial>Cancel</button>
+    <button mat-button [disabled]="isSaveDisabled" (click)="onSaveClick(SaveActionFlags.SaveAndClose)">Save & Close</button>
+    <button mat-button *ngIf="showSaveAndAddAnotherButton" [disabled]="isSaveAndAddAnotherDisabled" (click)="onSaveClick(SaveActionFlags.SaveAndAddAnother)">Save & Add Another</button>
+    <button mat-button *ngIf="showSaveAndDuplicateButton" [disabled]="isSaveAndDuplicateDisabled" (click)="onSaveClick(SaveActionFlags.SaveAndDuplicate)">Save & Duplicate</button>
+    <button mat-button *ngIf="showSaveAndRenderButton" [disabled]="isSaveAndRenderDisabled" (click)="onSaveClick(SaveActionFlags.SaveAndRender)">Save & Render</button>
+</div>
