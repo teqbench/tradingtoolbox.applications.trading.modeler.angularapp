@@ -39,7 +39,7 @@ export class ScenarioLotsDialogComponent {
 
   /**
    * Creates an instance of ScenarioLotsDialogComponent.
-   * 
+   *
    * @param {PositionScenarioLot[]} data Position's scenario lot data to display in UI table.
    * @memberof ScenarioLotsDialogComponent
    */
@@ -49,7 +49,7 @@ export class ScenarioLotsDialogComponent {
   /**
    * Gets the total initial value of the lot from the supplied data.
    *
-   * @return {*} 
+   * @return {*}
    * @memberof ScenarioLotsDialogComponent
    */
   getTotalInitialValue() {
@@ -59,7 +59,7 @@ export class ScenarioLotsDialogComponent {
   /**
    * Gets the total share count of the lot from the supplied data.
    *
-   * @return {*} 
+   * @return {*}
    * @memberof ScenarioLotsDialogComponent
    */
   getTotalShareCount() {
@@ -69,7 +69,7 @@ export class ScenarioLotsDialogComponent {
   /**
    * Gets the total gross profit of the lot from the supplied data.
    *
-   * @return {*} 
+   * @return {*}
    * @memberof ScenarioLotsDialogComponent
    */
   getTotalGrossProfit() {

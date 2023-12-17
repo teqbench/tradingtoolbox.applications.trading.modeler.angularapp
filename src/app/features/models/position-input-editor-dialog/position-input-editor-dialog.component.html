@@ -73,8 +73,8 @@
                         </div>
                         <div fxFlex *ngIf="isEditingMultiple"></div>
                         <div fxLayout="column" class="form-input-field" *ngIf="isEditingMultiple">
-                            <mat-checkbox 
-                                (change)="$event ? masterToggle() : null" 
+                            <mat-checkbox
+                                (change)="$event ? masterToggle() : null"
                                 [checked]="selection.hasValue() && isAllSelected"
                                 [indeterminate]="selection.hasValue() && !isAllSelected">
                                 Include/Exclude All Fields
@@ -82,7 +82,7 @@
                         </div>
                         <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
                             &nbsp;
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -100,9 +100,9 @@
                         <div fxLayout="column" class="form-input-field">
                             <mat-label>Average # Positions / Day: {{position.averageNumberOfPositionsPerDay}}
                             </mat-label>
-                            <mat-slider [min]="1" [max]="24" [step]="1" [tickInterval]="1"
-                                (input)="onAverageNumberOfPositionsPerDayInputChange($event)"
+                            <mat-slider min="1" max="24" step="1" showTickMarks
                                 formControlName="averageNumberOfPositionsPerDay">
+                                <input matSliderThumb>
                             </mat-slider>
                         </div>
                         <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
@@ -113,8 +113,7 @@
                         <div fxLayout="column" class="form-input-field">
                             <mat-label>Average # Lots / Position: {{position.averageNumberOfLotsPerPosition}}
                             </mat-label>
-                            <mat-slider [min]="1" [max]="100" [step]="1" [tickInterval]="1"
-                                (input)="onAverageNumberOfLotsPerPositionInputChange($event)"
+                            <mat-slider min="1" max="100" step="1" showTickMarks
                                 formControlName="averageNumberOfLotsPerPosition">
                             </mat-slider>
                         </div>
@@ -126,8 +125,7 @@
                         <div fxLayout="column" class="form-input-field">
                             <mat-label>Average # Trading Days / Week: {{position.averageNumberOfTradingDaysPerWeek}}
                             </mat-label>
-                            <mat-slider [min]="1" [max]="7" [step]="1" [tickInterval]="1"
-                                (input)="onAverageNumberOfTradingDaysPerWeekInputChange($event)"
+                            <mat-slider min="1" max="7" step="1" showTickMarks
                                 formControlName="averageNumberOfTradingDaysPerWeek">
                             </mat-slider>
                         </div>
@@ -140,8 +138,7 @@
                             <mat-label>Estimated Trade Success Rate: {{position.estimatedSuccessRate | percent:
                                 '1.2'}}
                             </mat-label>
-                            <mat-slider [min]="0" [max]="1" [step]="0.0025" [tickInterval]="40"
-                                (input)="onEstimatedSuccessRateInputChange($event)"
+                            <mat-slider min="0" max="1" step="0.0025" showTickMarks
                                 formControlName="estimatedSuccessRate">
                             </mat-slider>
                         </div>
@@ -161,8 +158,8 @@
                         </div>
                         <div fxLayout="column" class="form-input-field">
                             <mat-label>Target % Gain / Position: {{position.targetGain | percent: '1.2'}}</mat-label>
-                            <mat-slider [min]="0" [max]="1" [step]="0.0025" [tickInterval]="40"
-                                (input)="onTargetGainInputChange($event)" formControlName="targetGain">
+                            <mat-slider min="0" max="1" step="0.0025" showTickMarks
+                                formControlName="targetGain">
                             </mat-slider>
                         </div>
                         <div fxLayout="column" class="form-select-field" *ngIf="isEditingMultiple">
@@ -192,12 +189,13 @@
                                 <mat-select formControlName="federalTaxRate" required
                                     panelClass="select-panel-wide-content"
                                     (selectionChange)="onFederalTaxRateInputChange($event)">
-                                    <mat-optgroup *ngFor="let group of federalTaxGroups" [label]="group.name"
-                                        [disabled]="group.disabled">
-                                        <mat-option *ngFor="let tax of group.taxes" [value]="tax.value">
-                                            {{tax.viewValue}}
-                                        </mat-option>
-                                    </mat-optgroup>
+                                    @for (group of federalTaxGroups; track group) {
+                                      <mat-optgroup [label]="group.name" [disabled]="group.disabled">
+                                        @for (tax of group.taxes; track tax) {
+                                          <mat-option [value]="tax.value">{{tax.viewValue}}</mat-option>
+                                        }
+                                      </mat-optgroup>
+                                    }
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -211,12 +209,13 @@
                                 <mat-label>State Tax Rate</mat-label>
                                 <mat-select formControlName="stateTaxRate" required
                                     (selectionChange)="onStateTaxRateInputChange($event)">
-                                    <mat-optgroup *ngFor="let group of stateTaxGroups" [label]="group.name"
-                                        [disabled]="group.disabled">
-                                        <mat-option *ngFor="let tax of group.taxes" [value]="tax.value">
-                                            {{tax.viewValue}}
-                                        </mat-option>
-                                    </mat-optgroup>
+                                    @for (group of stateTaxGroups; track group) {
+                                      <mat-optgroup [label]="group.name" [disabled]="group.disabled">
+                                        @for (tax of group.taxes; track tax) {
+                                          <mat-option [value]="tax.value">{{tax.viewValue}}</mat-option>
+                                        }
+                                      </mat-optgroup>
+                                    }
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -257,8 +256,8 @@
                         <div fxLayout="column" class="form-input-field">
                             <mat-label>Average Monthly Expenses: {{position.expenses | currencyExtended: 'symbol' :
                                 '1.0'}}</mat-label>
-                            <mat-slider [min]="0" [max]="100000" [step]="250" [tickInterval]="10"
-                                (input)="onExpensesInputChange($event)" formControlName="expenses">
+                            <mat-slider min="0" max="100000" step="250" showTickMarks
+                                formControlName="expenses">
                             </mat-slider>
                         </div>
                     </div>

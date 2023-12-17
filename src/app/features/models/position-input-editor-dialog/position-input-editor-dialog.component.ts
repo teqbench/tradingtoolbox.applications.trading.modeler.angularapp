@@ -141,7 +141,7 @@ export class EditModelDialogComponent implements OnInit {
 
   // The position to be worked on
   position: PositionInput = new PositionInput();
-  
+
   // The dialog's icon is determined based on the edit mode supplied as part of intialization and updated in the HTML template.
   icon: string;
 
@@ -197,8 +197,8 @@ export class EditModelDialogComponent implements OnInit {
     }
   ];
 
-  // List of the fields used for editing multiple models at once as part of the selection tracking of 
-  // which fields to edit and apply to the selected models. 
+  // List of the fields used for editing multiple models at once as part of the selection tracking of
+  // which fields to edit and apply to the selected models.
   private readonly _multpleEditIncludes: FieldKeysType[] = [
     FieldKeysType.PricePerShare,
 
@@ -219,7 +219,7 @@ export class EditModelDialogComponent implements OnInit {
 
 /**
  * Creates an instance of EditModelDialogComponent.
- * 
+ *
  * @param {PositionRepositoryService} _positionRepositoryService Service to manage saving data to the DB repository.
  * @param {MatDialogRef<EditModelDialogComponent>} _dialogRef Reference to the MatDialog service to help with display of modal dialogs.
  * @param {FormBuilder} _fb The formbuilder control to help with the management of the input editor's form.
@@ -242,7 +242,7 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
         this.icon = "content_copy";
         this.title = "Duplicate Position - " + args.modelInput?.name;
 
-        // For a duplicate, clear the id/name before displaying the editor. In effect, adding a 'new' position  
+        // For a duplicate, clear the id/name before displaying the editor. In effect, adding a 'new' position
         // with all but the id/name fields populated. New id value will be assigned when saved to the DB (by the db)
         this.position.id = "";
         this.position.name = "";
@@ -389,38 +389,72 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
   }
 
   /**
-   * A callback method that is invoked immediately after the default change detector has checked the directive's data-bound properties for 
+   * A callback method that is invoked immediately after the default change detector has checked the directive's data-bound properties for
    * the first time, and before any of the view or content children have been checked. It is invoked only once when the directive is instantiated.
    *
    * @memberof EditModelDialogComponent
    */
   ngOnInit(): void {
     // Setup obervers
-    this.form.get('modelName')?.valueChanges.subscribe(val => {
-      this.position.name = val;
+    this.form.get('modelName')?.valueChanges.subscribe(value => {
+      this.position.name = value;
     });
 
-    this.form.get('initialValue')?.valueChanges.subscribe(val => {
-      this.position.initialValue = val;
+    this.form.get('initialValue')?.valueChanges.subscribe(value => {
+      this.position.initialValue = value;
     });
-    this.form.get('pricePerShare')?.valueChanges.subscribe(val => {
-      this.position.pricePerShare = val;
+    this.form.get('pricePerShare')?.valueChanges.subscribe(value => {
+      this.position.pricePerShare = value;
     });
 
-    this.form.get('fees')?.valueChanges.subscribe(val => {
-      this.position.estimatedFeePerTransaction = val;
+    this.form.get('fees')?.valueChanges.subscribe(value => {
+      this.position.estimatedFeePerTransaction = value;
+    });
+
+    this.form.get('averageNumberOfPositionsPerDay')?.valueChanges.subscribe(value => {
+      this.position.averageNumberOfPositionsPerDay = value;
+    });
+
+    this.form.get('averageNumberOfLotsPerPosition')?.valueChanges.subscribe(value => {
+      this.position.averageNumberOfLotsPerPosition = value;
+    });
+
+    this.form.get('averageNumberOfTradingDaysPerWeek')?.valueChanges.subscribe(value => {
+      this.position.averageNumberOfTradingDaysPerWeek = value;
+    });
+
+    this.form.get('estimatedSuccessRate')?.valueChanges.subscribe(value => {
+      this.position.estimatedSuccessRate = value;
+    });
+
+    this.form.get('targetGain')?.valueChanges.subscribe(value => {
+      this.position.targetGain = value;
+    });
+
+    this.form.get('expenses')?.valueChanges.subscribe(value => {
+      this.position.expenses = value;
     });
   }
 
-  /**
-   * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
-   *
-   * @param {MatSliderChange} event The source of the change.
-   * @memberof EditModelDialogComponent
-   */
-  onAverageNumberOfPositionsPerDayInputChange(event: MatSliderChange) {
-    this.position.averageNumberOfPositionsPerDay = event.value ? event.value : 1;
-  }
+  // /**
+  //  * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
+  //  *
+  //  * @param {MatSliderChange} event The source of the change.
+  //  * @memberof EditModelDialogComponent
+  //  */
+  // onAverageNumberOfPositionsPerDayInputChange(event: MatSliderChange) {
+  //   this.position.averageNumberOfPositionsPerDay = event.value ? event.value : 1;
+  // }
+
+  // /**
+  //  * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
+  //  *
+  //  * @param {MatSliderChange} event The source of the change.
+  //  * @memberof EditModelDialogComponent
+  //  */
+  // onAverageNumberOfLotsPerPositionInputChange(event: MatSliderChange) {
+  //   this.position.averageNumberOfLotsPerPosition = event.value ? event.value : 1;
+  // }
 
   /**
    * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
@@ -428,9 +462,9 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
    * @param {MatSliderChange} event The source of the change.
    * @memberof EditModelDialogComponent
    */
-  onAverageNumberOfLotsPerPositionInputChange(event: MatSliderChange) {
-    this.position.averageNumberOfLotsPerPosition = event.value ? event.value : 1;
-  }
+  // onAverageNumberOfTradingDaysPerWeekInputChange(event: MatSliderChange) {
+  //   this.position.averageNumberOfTradingDaysPerWeek = event.value ? event.value : 5;
+  // }
 
   /**
    * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
@@ -438,9 +472,9 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
    * @param {MatSliderChange} event The source of the change.
    * @memberof EditModelDialogComponent
    */
-  onAverageNumberOfTradingDaysPerWeekInputChange(event: MatSliderChange) {
-    this.position.averageNumberOfTradingDaysPerWeek = event.value ? event.value : 5;
-  }
+  // onEstimatedSuccessRateInputChange(event: MatSliderChange) {
+  //   this.position.estimatedSuccessRate = event.value ? event.value : 0;
+  // }
 
   /**
    * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
@@ -448,19 +482,9 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
    * @param {MatSliderChange} event The source of the change.
    * @memberof EditModelDialogComponent
    */
-  onEstimatedSuccessRateInputChange(event: MatSliderChange) {
-    this.position.estimatedSuccessRate = event.value ? event.value : 0;
-  }
-
-  /**
-   * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
-   *
-   * @param {MatSliderChange} event The source of the change.
-   * @memberof EditModelDialogComponent
-   */
-  onTargetGainInputChange(event: MatSliderChange) {
-    this.position.targetGain = event.value ? event.value : 0;
-  }
+  // onTargetGainInputChange(event: MatSliderChange) {
+  //   this.position.targetGain = event.value ? event.value : 0;
+  // }
 
   /**
    * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
@@ -482,15 +506,15 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
     this.position.stateTaxRate = event.value ? Number(event.value) : 0;
   }
 
-  /**
-   * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
-   *
-   * @param {MatSliderChange} event The source of the change.
-   * @memberof EditModelDialogComponent
-   */
-  onExpensesInputChange(event: MatSliderChange) {
-    this.position.expenses = event.value ? event.value : 0;
-  }
+  // /**
+  //  * Update position value from UI when changes to the position instance variable updates calculated values on the fly.
+  //  *
+  //  * @param {MatSliderChange} event The source of the change.
+  //  * @memberof EditModelDialogComponent
+  //  */
+  // onExpensesInputChange(event: MatSliderChange) {
+  //   this.position.expenses = event.value ? event.value : 0;
+  // }
 
   /**
    * Reset the input editor form.
@@ -541,7 +565,7 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
    * Saves the current position and closes the dialog.
    *
    * @param {SaveActionFlags} saveActionFlags The save action flags the dialog was initialized with.
-   * @return {*} 
+   * @return {*}
    * @memberof EditModelDialogComponent
    */
   onSaveClick(saveActionFlags: SaveActionFlags) {
@@ -702,7 +726,7 @@ constructor(private _positionRepositoryService: PositionRepositoryService, priva
    * Selects all rows if they are not all selected; otherwise clear selection.
    *
    * @param {boolean} [forceClear=false] Flag to force clear of selected rows from code. Default is false.
-   * @return {*} 
+   * @return {*}
    * @memberof EditModelDialogComponent
    */
   masterToggle(forceClear: boolean = false) {

@@ -12,19 +12,19 @@ import { PositionScenarioLot } from '../models/position-scenario-lot';
  * Service managing the rendering of a position based on a position's input values.
  *
  * @export
- * @class PositionRedererService
+ * @class PositionRendererService
  */
 @Injectable({
   providedIn: 'root'
 })
-export class PositionRedererService {
+export class PositionRendererService {
   private static readonly NUMBER_OF_SCENARIOS_TO_GENERATE: number = 6;
   private static readonly AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR: number = 253;
-  private static readonly AVERAGE_NUMBER_OF_TRADING_DAYS_PER_MONTH: number = PositionRedererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR / 12;
+  private static readonly AVERAGE_NUMBER_OF_TRADING_DAYS_PER_MONTH: number = PositionRendererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR / 12;
 
   /**
-  * Creates an instance of PositionRedererService.
-  * @memberof PositionRedererService
+  * Creates an instance of PositionRendererService.
+  * @memberof PositionRendererService
   */
   constructor() { }
 
@@ -33,7 +33,7 @@ export class PositionRedererService {
    *
    * @param {PositionInput} modelInput
    * @return {*}  {RenderedPosition} A rendered position model.
-   * @memberof PositionRedererService
+   * @memberof PositionRendererService
    */
   public renderModel(modelInput: PositionInput): RenderedPosition {
     let instance: RenderedPosition = new RenderedPosition();
@@ -43,13 +43,13 @@ export class PositionRedererService {
     let lotSharePriceIncrement: number = modelInput.pricePerShare * modelInput.averageGainPerLot;
 
     // Each "scenario" is basically modelling out a month so just do six for faster calculations and beyond that, numbers just get too unrealistic.
-    for (let i = 1; i <= PositionRedererService.NUMBER_OF_SCENARIOS_TO_GENERATE; i++) {
+    for (let i = 1; i <= PositionRendererService.NUMBER_OF_SCENARIOS_TO_GENERATE; i++) {
       let grossSinglePosition: number = 0;
 
       // setup scenario position
       let position: PositionScenarioSizing = new PositionScenarioSizing(currentPositionValue, currentNumberOfSharesInPosition, modelInput.averageNumberOfLotsPerPosition);
 
-      // Calculate gross profit for a position factoring in there may be more than one lot per position. At same time keep running list of 
+      // Calculate gross profit for a position factoring in there may be more than one lot per position. At same time keep running list of
       // the lot asking prices for display
       let profits: PositionScenarioProfits = new PositionScenarioProfits();
       let gains: PositionScenarioGains = new PositionScenarioGains();
@@ -68,7 +68,7 @@ export class PositionRedererService {
       // Init scenario position
       profits.grossSinglePosition = grossSinglePosition;
 
-      // The gross is adjusted based on the estimated success rate of asks/sales. This is done because impossible to be 100% so, in an 
+      // The gross is adjusted based on the estimated success rate of asks/sales. This is done because impossible to be 100% so, in an
       // attempt to make more realistic model scenarios, have the ability to adjust the estimated success rate which impacts the total gains.
       // No losses are factored in at this time as not sure how would do that.
       profits.adjustedGrossSinglePosition = grossSinglePosition * modelInput.estimatedSuccessRate;
@@ -83,8 +83,8 @@ export class PositionRedererService {
 
       // If trading "5" days per week, assume trading the traditional markets which are closed weekends etc. and in effect average 253 per year and 21.083333333333333 per month (i.e. 253 / 12)
       if (modelInput.averageNumberOfTradingDaysPerWeek == 5) {
-        gains.gainsMonthly = gains.gainsDaily * PositionRedererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_MONTH;
-        gains.gainsYearly = gains.gainsDaily * PositionRedererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR;
+        gains.gainsMonthly = gains.gainsDaily * PositionRendererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_MONTH;
+        gains.gainsYearly = gains.gainsDaily * PositionRendererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR;
       } else {
         gains.gainsMonthly = gains.gainsDaily * (4 * modelInput.averageNumberOfTradingDaysPerWeek);
         gains.gainsYearly = gains.gainsDaily * (12 * 4 * modelInput.averageNumberOfTradingDaysPerWeek);
@@ -101,8 +101,8 @@ export class PositionRedererService {
 
       // If trading "5" days per week, assume trading the traditional markets which are closed weekends etc. and in effect average 253 per year and 21.083333333333333 per month (i.e. 253 / 12)
       if (modelInput.averageNumberOfTradingDaysPerWeek == 5) {
-        fees.feesMonthly = fees.feesAllPositionsDaily * PositionRedererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_MONTH;
-        fees.feesYearly = fees.feesAllPositionsDaily * PositionRedererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR
+        fees.feesMonthly = fees.feesAllPositionsDaily * PositionRendererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_MONTH;
+        fees.feesYearly = fees.feesAllPositionsDaily * PositionRendererService.AVERAGE_NUMBER_OF_TRADING_DAYS_PER_YEAR
       } else {
         fees.feesMonthly = fees.feesAllPositionsDaily * (4 * modelInput.averageNumberOfTradingDaysPerWeek);
         fees.feesYearly = fees.feesAllPositionsDaily * (12 * 4 * modelInput.averageNumberOfTradingDaysPerWeek);

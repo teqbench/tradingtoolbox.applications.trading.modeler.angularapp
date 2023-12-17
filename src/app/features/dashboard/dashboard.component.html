@@ -5,14 +5,14 @@
     </button>
     <span>Trading Toolbox</span>
     <span class="toolbar-spacer"></span>
-    <button mat-icon-button matTooltip="Add New Position">
+    <button mat-icon-button matTooltip="Add New Position" (click)="addModel()">
       <mat-icon>add_circle_outline</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Edit Selected Positions">
+    <button mat-icon-button matTooltip="Edit Selected Positions" [disabled]="!selection.hasValue() || (selection.selected.length < 2)" (click)="editSelectedModels()">
       <mat-icon>app_registration</mat-icon>
     </button>
     <span class="toolbar-button-spacer">|</span>
-    <button mat-icon-button matTooltip="Delete Selected Positions">
+    <button mat-icon-button matTooltip="Delete Selected Positions" [disabled]="!selection.hasValue() || (selection.selected.length < 2)" (click)="confirmDeleteSelectedModels()">
       <mat-icon>delete</mat-icon>
     </button>
     <span class="toolbar-button-spacer">|</span>
@@ -224,6 +224,27 @@
           <ng-container matColumnDef="estimatedFeePerTransaction">
               <mat-header-cell class="mat-column-fees" *matHeaderCellDef>Fees</mat-header-cell>
               <mat-cell class="mat-column-fees" *matCellDef="let element">{{-1*element.estimatedFeePerTransaction | currencyExtended}}
+              </mat-cell>
+          </ng-container>
+
+            <!-- Render Column -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell class="mat-column-actions" *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell class="mat-column-actions" *matCellDef="let element">
+                  <button mat-icon-button matTooltip="Render This Position" (click)="openModelRenderDialog(element)">
+                      <mat-icon>view_in_ar</mat-icon>
+                  </button>
+                  |
+                  <button mat-icon-button matTooltip="Edit This Position" (click)="editModel(element)">
+                      <mat-icon>app_registration</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Duplicate This Position" (click)="duplicateModel(element)">
+                      <mat-icon>content_copy</mat-icon>
+                  </button>
+                  |
+                  <button mat-icon-button matTooltip="Delete This Position" (click)="confirmDelete(element)">
+                      <mat-icon>delete</mat-icon>
+                  </button>
               </mat-cell>
           </ng-container>
 

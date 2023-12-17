@@ -3,7 +3,7 @@ import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 
-import { PositionRedererService } from '../../../../shared/services/position-renderer.service';
+import { PositionRendererService } from '../../../../shared/services/position-renderer.service';
 
 import { PositionInput } from '../../../../shared/models/position-input';
 import { PositionScenario } from '../../../../shared/models/position-scenario';
@@ -73,7 +73,7 @@ export class ModelRenderDialogComponent {
     'actions'
   ];
 
-  // List of positions to display; this will only be list of one since only displaying a single positon, but 
+  // List of positions to display; this will only be list of one since only displaying a single positon, but
   // makes it easier to use with a MatTable.
   positions: PositionInput[] = [];
 
@@ -95,12 +95,12 @@ export class ModelRenderDialogComponent {
   /**
    * Creates an instance of ModelRenderDialogComponent.
    * @param {MatDialog} _dialog
-   * @param {PositionRedererService} _positionRedererService
+   * @param {PositionRendererService} _positionRedererService
    * @param {IRenderDialogArgs} data
    * @param {PositionInputEditorService} _positionInputEditorService
    * @memberof ModelRenderDialogComponent
    */
-  constructor(private _dialog: MatDialog, private _positionRedererService: PositionRedererService, @Inject(MAT_DIALOG_DATA) public data: IRenderDialogArgs, private _positionInputEditorService: PositionInputEditorService) {
+  constructor(private _dialog: MatDialog, private _positionRedererService: PositionRendererService, @Inject(MAT_DIALOG_DATA) public data: IRenderDialogArgs, private _positionInputEditorService: PositionInputEditorService) {
     this.current = data.current;
 
     this.positions.push(this.current);
@@ -222,7 +222,7 @@ export class ModelRenderDialogComponent {
 
   /**
    * Navigate to the first position and render the position.
-   * 
+   *
    * @memberof ModelRenderDialogComponent
    */
   navToFirstPositionAndRender() {
