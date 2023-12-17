@@ -26,7 +26,8 @@ const HTTP_OPTIONS = {
 export class PositionRepositoryService {
   private _handleError: HandleError;
 
-  private readonly BASE_URL_TRADE_MODELER_SCENARIOS: string = "/api/at/tradingpositionmodeler/positions/";
+  private readonly BASE_URL_TRADE_MODELER_SCENARIOS: string = "/api/teqbench/tradingtoolbox/trading/modeler/";
+
   private readonly URL_GET_ALL_MODELS_SERVICE: URL;
   private readonly URL_CREATE_MODEL_SERVICE: URL;
   private readonly URL_UPDATE_MODEL_SERVICE: URL;
@@ -38,21 +39,34 @@ export class PositionRepositoryService {
   /**
    * Creates an instance of PositionRepositoryService.
    * @param {HttpClient} _httpClient
-   * @param {string} _serviceApiTradingToolboxTradingPositionModelBaseUrl
+   * @param {string} _serviceTradingToolboxTradingModelerApiBaseUrl
    * @param {HttpErrorHandlerService} _httpErrorHandlerService
    * @param {NotificationService} _notificationService
    * @memberof PositionRepositoryService
    */
-  constructor(private _httpClient: HttpClient, @Inject('SERVICE_API_TRADING_TOOLBOX_TRADING_POSITION_MODELER_BASE_URL') private _serviceApiTradingToolboxTradingPositionModelBaseUrl: string, private _httpErrorHandlerService: HttpErrorHandlerService, private _notificationService: NotificationService) {
+  constructor(private _httpClient: HttpClient, @Inject('SERVICE_API_TRADING_TOOLBOX_TRADING_MODELER_BASE_URL') private _serviceTradingToolboxTradingModelerApiBaseUrl: string, private _httpErrorHandlerService: HttpErrorHandlerService, private _notificationService: NotificationService) {
     this._handleError = _httpErrorHandlerService.createHandleError('PositionRepositoryService');
 
-    this.URL_GET_ALL_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS, this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
-    this.URL_CREATE_MODEL_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS, this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
-    this.URL_UPDATE_MODEL_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS, this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
-    this.URL_UPDATE_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS, this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
-    this.URL_DELETE_MODEL_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS, this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
-    this.URL_DELETE_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "delete-multiple", this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
-    this.URL_REORDER_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "patch-multiple", this._serviceApiTradingToolboxTradingPositionModelBaseUrl);
+    // Construct URL to get all models.
+    this.URL_GET_ALL_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "positions", this._serviceTradingToolboxTradingModelerApiBaseUrl);
+
+    // Construct URL to add one model.
+    this.URL_CREATE_MODEL_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "position", this._serviceTradingToolboxTradingModelerApiBaseUrl);
+
+    // Construct URL to update one model.
+    this.URL_UPDATE_MODEL_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "position", this._serviceTradingToolboxTradingModelerApiBaseUrl);
+
+    // Construct URL to update one or more fields on multiple models.
+    this.URL_UPDATE_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "positions", this._serviceTradingToolboxTradingModelerApiBaseUrl);
+
+    // Construct URL to delete one model.
+    this.URL_DELETE_MODEL_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "position", this._serviceTradingToolboxTradingModelerApiBaseUrl);
+
+    // Construct URL to delete multiple models.
+    this.URL_DELETE_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "positions/delete", this._serviceTradingToolboxTradingModelerApiBaseUrl);
+
+    // Construct URL to reorder models.
+    this.URL_REORDER_MODELS_SERVICE = new URL(this.BASE_URL_TRADE_MODELER_SCENARIOS + "positions", this._serviceTradingToolboxTradingModelerApiBaseUrl);
   }
 
   /**
@@ -110,7 +124,7 @@ export class PositionRepositoryService {
   }
 
   /**
-   * Update many position documents at once/
+   * Update many position documents at once.
    *
    * @param {string[]} ids The IDs of the documents to update.
    * @param {IPatch<any>[]} patches The field level specific updates.
@@ -120,8 +134,8 @@ export class PositionRepositoryService {
   public updatePositionDocuments(ids: string[], patches: IPatch<any>[]): Observable<IPositionInput[]> {
     // In nearly all examples, patch documents are passed as part of the body and any ID is part of the resource URL.
     // In this case with more than one ID, necessary to pass both as part of the body; tried to pass one in the header
-    // and the other as part of the body, but was having a heck of a time getting the data out of out of the header on 
-    // the serve side; worked OK when request came from Swagger but from Angular, could not get it to work. Compromised 
+    // and the other as part of the body, but was having a heck of a time getting the data out of out of the header on
+    // the serve side; worked OK when request came from Swagger but from Angular, could not get it to work. Compromised
     // solution is current implementation of sending both as part of the body.
     const patchRequest: any = { ids: ids, patchDocument: patches };
     const headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json-patch+json");

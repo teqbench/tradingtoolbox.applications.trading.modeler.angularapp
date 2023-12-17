@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { PercentPipe, DecimalPipe } from '@angular/common';
 
 import { MaterialModule } from './core/modules/material/material.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -15,6 +17,10 @@ import { SnackbarNotificationComponent } from './core/components/snackbar-notifi
 // Core Services
 import { ConfirmationDialogService } from './core/services/confirmation-dialog.service';
 import { ThemeService } from './core/services/theme.service';
+
+// Shared Services
+import { PositionRepositoryService } from './shared/services/position-repository.service';
+import { HttpErrorHandlerService } from './shared/services/http-error-handler.service';
 
 // Shared Pipes
 import { CurrencyExtendedPipe } from './shared/pipes/currency-extended.pipe'
@@ -35,9 +41,10 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
     AutoCompleteOffDirective
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    BrowserModule,
+    HttpClientModule,
     MaterialModule,
     MatSlideToggleModule
   ],
@@ -46,6 +53,10 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
   ],
   providers: [
     ConfirmationDialogService,
+    DecimalPipe,
+    HttpErrorHandlerService,
+    PercentPipe,
+    PositionRepositoryService,
     ThemeService
   ],
   bootstrap: [AppComponent]

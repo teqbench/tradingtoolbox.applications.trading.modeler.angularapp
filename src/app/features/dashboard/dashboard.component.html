@@ -32,7 +32,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <div class="dashboard-container">
-  <div class="dashboard-body">
+  <!-- <div class="dashboard-body">
     <section>
       <div class="example-label">Basic</div>
       <div class="example-button-row">
@@ -113,6 +113,122 @@
     <button mat-stroked-button color="primary" (click)="showInformationSnackbar()">Information</button>
     <button mat-stroked-button color="primary" (click)="showWarningSnackbar()">Warning</button>
     <button mat-stroked-button color="primary" (click)="showErrorSnackbar()">Error</button>
-    <button mat-stroked-button color="primary" (click)="showHelpSnackbar()">Help</button>    
-  </div>
+    <button mat-stroked-button color="primary" (click)="showHelpSnackbar()">Help</button>
+  </div> -->
+
+  <mat-table id="dashboardTable" [dataSource]="dataSource"
+  cdkDropList
+  [cdkDropListData]="dataSource.filteredData"
+  (cdkDropListDropped)="onCdkDropListDropped($event)">
+
+
+             <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <mat-header-cell class="mat-column-select" *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        Position Name
+                    </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell class="mat-column-select" *matCellDef="let element">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)">
+                        {{element.name}}
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+                      <!-- Position Value Column -->
+            <ng-container matColumnDef="initialValue">
+              <mat-header-cell class="mat-column-position-value" *matHeaderCellDef>Initial Value</mat-header-cell>
+              <mat-cell class="mat-column-position-value" *matCellDef="let element">{{element.initialValue | currencyExtended: 'symbol' : '1.0-4'}} </mat-cell>
+          </ng-container>
+
+          <!-- Share Price Column -->
+          <ng-container matColumnDef="pricePerShare">
+              <mat-header-cell class="mat-column-share-price" *matHeaderCellDef>$ / Share</mat-header-cell>
+              <mat-cell class="mat-column-share-price" *matCellDef="let element">{{element.pricePerShare | currencyExtended: 'symbol' : '1.0-4'}} </mat-cell>
+          </ng-container>
+
+          <!-- Position Size Column -->
+          <ng-container matColumnDef="sizeOfPosition">
+              <mat-header-cell class="mat-column-postion-size" *matHeaderCellDef># Shares<br />1 Position</mat-header-cell>
+              <mat-cell class="mat-column-postion-size" *matCellDef="let element">{{element.numberOfSharesInPosition | number: '1.0-6'}} </mat-cell>
+          </ng-container>
+
+          <!-- Lot Size Column -->
+          <ng-container matColumnDef="averageNumberOfSharesPerLot">
+              <mat-header-cell class="mat-column-lot-size" *matHeaderCellDef>Ave. #<br />Shares / Lot</mat-header-cell>
+              <mat-cell class="mat-column-lot-size" *matCellDef="let element">{{element.averageNumberOfSharesPerLot | number: '1.0-6'}} </mat-cell>
+          </ng-container>
+
+          <!-- Ave. Positions / Day Column -->
+          <ng-container matColumnDef="averageNumberOfPositionsPerDay">
+              <mat-header-cell class="mat-column-ave-positions-per-day" *matHeaderCellDef>Ave. #<br/>Positions / Day</mat-header-cell>
+              <mat-cell class="mat-column-ave-positions-per-day" *matCellDef="let element">{{element.averageNumberOfPositionsPerDay | number: '1.0'}}
+              </mat-cell>
+          </ng-container>
+
+          <!-- Ave. Lots / Position Column -->
+          <ng-container matColumnDef="averageNumberOfLotsPerPosition">
+              <mat-header-cell class="mat-column-ave-lots-per-position" *matHeaderCellDef>Ave. #<br/>Lots / Position</mat-header-cell>
+              <mat-cell class="mat-column-ave-lots-per-position" *matCellDef="let element">{{element.averageNumberOfLotsPerPosition | number: '1.0'}}
+              </mat-cell>
+          </ng-container>
+
+          <!-- Bot Indicator Column -->
+          <ng-container matColumnDef="botIndicator">
+              <mat-header-cell class="mat-column-bot-indicator" *matHeaderCellDef></mat-header-cell>
+              <mat-cell class="mat-column-bot-indicator" *matCellDef="let element">
+                  <mat-icon class="highlight" *ngIf="element.isBotCandidate" matTooltip="{{element.botCandidateMessage}}">smart_toy</mat-icon>
+              </mat-cell>
+          </ng-container>
+
+          <!-- Estimated Success Rate Column -->
+          <ng-container matColumnDef="estimatedSuccessRate">
+              <mat-header-cell class="mat-column-estimated-success-rate" *matHeaderCellDef matTooltip="The estimated success rate is simply the number of successful 'asks' (i.e. sales) for a position's lots. It assumes only ONE successful 'bid' to get into a position.">Est. Trade<br />Success Rate
+              </mat-header-cell>
+              <mat-cell class="mat-column-estimated-success-rate" *matCellDef="let element">{{element.estimatedSuccessRate | percent: '1.0-3'}}</mat-cell>
+          </ng-container>
+
+          <!-- Target Gain Column -->
+          <ng-container matColumnDef="targetGain">
+              <mat-header-cell class="mat-column-target-gain-per-position" *matHeaderCellDef>Target %<br/>Gain / Position</mat-header-cell>
+              <mat-cell class="mat-column-target-gain-per-position" *matCellDef="let element">{{element.targetGain | percent: '1.0-3'}}</mat-cell>
+          </ng-container>
+
+          <!-- Ave. Lot Gain Column -->
+          <ng-container matColumnDef="averageGainPerLot">
+              <mat-header-cell class="mat-column-ave-gain-per-lot" *matHeaderCellDef>Ave. %<br/>Gain / Lot</mat-header-cell>
+              <mat-cell class="mat-column-ave-gain-per-lot" *matCellDef="let element">{{element.averageGainPerLot | percent: '1.0-3'}}</mat-cell>
+          </ng-container>
+
+          <!-- Ave. # Trading Days / Week Column -->
+          <ng-container matColumnDef="averageNumberOfTradingDaysPerWeek">
+              <mat-header-cell class="mat-column-ave-number-trading-days-per-week" *matHeaderCellDef>Ave. # Trading<br/> Days / Week</mat-header-cell>
+              <mat-cell class="mat-column-ave-number-trading-days-per-week" *matCellDef="let element">{{element.averageNumberOfTradingDaysPerWeek}} </mat-cell>
+          </ng-container>
+
+          <!-- Expenses Column -->
+          <ng-container matColumnDef="expenses">
+              <mat-header-cell class="mat-column-expenses" *matHeaderCellDef>Ave. Monthly<br />Expenses</mat-header-cell>
+              <mat-cell class="mat-column-expenses" *matCellDef="let element">{{-1* element.expenses | currencyExtended: 'symbol' : '1.0'}}</mat-cell>
+          </ng-container>
+
+          <!-- Effective Tax Rate Column -->
+          <ng-container matColumnDef="effectiveTaxRate">
+              <mat-header-cell class="mat-column-effective-tax" *matHeaderCellDef>Tax %</mat-header-cell>
+              <mat-cell class="mat-column-effective-tax"  *matCellDef="let element">{{element.effectiveTaxRate | percent: '1.0-2'}}</mat-cell>
+          </ng-container>
+
+          <!-- Fees Column -->
+          <ng-container matColumnDef="estimatedFeePerTransaction">
+              <mat-header-cell class="mat-column-fees" *matHeaderCellDef>Fees</mat-header-cell>
+              <mat-cell class="mat-column-fees" *matCellDef="let element">{{-1*element.estimatedFeePerTransaction | currencyExtended}}
+              </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag [cdkDragData]="row" [cdkDragDisabled]="!allowDragDrop"></mat-row>
+          <div *cdkDragPlaceholder></div>
+</mat-table>
 </div>
